@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InfoAdminClient index{% endblock %}
+
+{% block body %}
+    <h1>InfoAdminClient index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Notes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for info_admin_client in info_admin_clients %}
+            <tr>
+                <td>{{ info_admin_client.id }}</td>
+                <td>{{ info_admin_client.notes }}</td>
+                <td>
+                    <a href="{{ path('info_admin_client_show', {'id': info_admin_client.id}) }}">show</a>
+                    <a href="{{ path('info_admin_client_edit', {'id': info_admin_client.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('info_admin_client_new') }}">Create new</a>
+{% endblock %}

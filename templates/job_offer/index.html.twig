@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JobOffer index{% endblock %}
+
+{% block body %}
+    <h1>JobOffer index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>JobTitle</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>ClosingDate</th>
+                <th>Salary</th>
+                <th>DateCreated</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for job_offer in job_offers %}
+            <tr>
+                <td>{{ job_offer.id }}</td>
+                <td>{{ job_offer.jobTitle }}</td>
+                <td>{{ job_offer.description }}</td>
+                <td>{{ job_offer.location }}</td>
+                <td>{{ job_offer.closingDate ? job_offer.closingDate|date('Y-m-d') : '' }}</td>
+                <td>{{ job_offer.salary }}</td>
+                <td>{{ job_offer.dateCreated ? job_offer.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('job_offer_show', {'id': job_offer.id}) }}">show</a>
+                    <a href="{{ path('job_offer_edit', {'id': job_offer.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('job_offer_new') }}">Create new</a>
+{% endblock %}

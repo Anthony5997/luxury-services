@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New InfoAdminClient{% endblock %}
+
+{% block body %}
+    <h1>Create new InfoAdminClient</h1>
+
+    {{ include('info_admin_client/_form.html.twig') }}
+
+    <a href="{{ path('info_admin_client_index') }}">back to list</a>
+{% endblock %}
