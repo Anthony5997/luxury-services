@@ -36,8 +36,7 @@
                         <h3 class="text-extrabold">Create a new account</h3>
                         <form id="register-form" role="form" method="post" accept-char="UTF-8" autocomplete="off" data-parsley-validate>
                              {{ form_start(registrationForm) }}
-        
-       
+                            
 
                             <div class="input-field">
                             {{ form_widget(registrationForm.email, { 'attr': {
@@ -71,6 +70,15 @@
                                 <i class="fa fa-eye show-password"></i>
                                  <span class="help-block">Confirm your password.</span>
                                  <div class='red-text'>{{ form_errors(registrationForm.password.second)}}</div>
+                            </div>
+                            <div>
+                            <input type="radio" id="huey" name="role" value='1' checked>
+                            <label for="huey">candidate</label>
+                            </div>
+
+                            <div>
+                            <input type="radio" id="dewey" name="role" value="0">
+                            <label for="dewey">client</label>
                             </div>
 
                             <div class="checkbox">

@@ -3,6 +3,21 @@
 {% block title %}New JobOffer{% endblock %}
 
 {% block body %}
+
+     <section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="white-text">Post your Job !</h2>
+                        <span class="white-text">Welcome on board</span>
+                        <ol class="breadcrumb">
+                            <li><a href="#!">Client</a></li>
+                            <li class="active">New Job</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
     <h1>Create new JobOffer</h1>
 
     {{ include('job_offer/_form.html.twig') }}

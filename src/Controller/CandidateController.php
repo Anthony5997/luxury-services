@@ -106,7 +106,7 @@ class CandidateController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="candidate_delete", methods={"POST"})
+     * @Route("/", name="candidate_delete", methods={"POST"})
      */
     public function delete(Request $request, Candidate $candidate): Response
     {
@@ -116,7 +116,7 @@ class CandidateController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('candidate_index');
+        return $this->redirectToRoute('home');
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Candidate;
 use App\Entity\User;
+use App\Entity\Client;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\Authenticator;
@@ -34,20 +35,32 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            // do anything else you need here, like send an email
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
-           
             $user = $userRepository->find($user->getId());
+            $role = $request->get('role');
+            if($role == 1){
+      
+                $candidate = new Candidate();
+                $candidate->setUser($user);
+                $user->setRoles(["ROLE_CANDIDATE"]);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($candidate);
+                $entityManager->flush();
 
-            
-            $candidate = new Candidate();
-            $candidate->setUser($user);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($candidate);
-            $entityManager->flush();
+            }else{
 
+                $client = new Client();
+                $user->setRoles(["ROLE_CLIENT"]);
+                $client->setUser($user);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($client);
+                $entityManager->flush();
+            }
+
+     
 
 
             return $guardHandler->authenticateUserAndHandleSuccess(

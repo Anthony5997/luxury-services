@@ -173,3 +173,11 @@ body .log-section form .links a {
 #candidate_jobCategory, #candidate_experience{
     display: block;
 }
+
+#job_offer_jobCategory{
+    display: block;
+}
+
+#job_offer_jobType{
+    display: block;
+}
