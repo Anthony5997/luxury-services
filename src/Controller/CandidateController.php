@@ -94,9 +94,14 @@ class CandidateController extends AbstractController
             ]);
             }
 
+            $data = $candidate->toArray();
+            $lengthData = count($data);
+
         return $this->render('candidate/edit.html.twig', [
             'candidate' => $candidate,
             'form' => $form->createView(),
+            'dataCandidate' => $data,
+            'lengthData' => $lengthData,
         ]);
     }
 
@@ -139,37 +144,4 @@ class CandidateController extends AbstractController
                 }
 
         }
-
 }
-
-
-
-/* 
-  if($cv !==null && $profilPicture !== null && $passport !== null){
-
-                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
-                    $candidate->setProfilPicture($this->upload($profilPicture, 'profilePicture_directory'));
-                    $candidate->setPassportFile($this->upload($passport, 'passport_directory'));
-    
-                }elseif($cv !==null && $profilPicture !== null && $passport === null){
-
-                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
-                    $candidate->setProfilPicture($this->upload($profilPicture, 'profilePicture_directory'));
-                    $userPassportFileValue= $request->get('btnpassportFile'); 
-                    $candidate->setPassportFile($userPassportFileValue);
-                     
-                }elseif($cv !==null && $profilPicture === null && $passport !== null){
-
-                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
-                    $candidate->setPassportFile($this->upload($passport, 'passport_directory'));
-                    $userProfilPictureValue= $request->get('btnprofilPicture'); 
-                    $candidate->setPassportFile($userProfilPictureValue);
-                }
-                elseif($cv ===null && $profilPicture !== null && $passport !== null){
-
-                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
-                    $candidate->setPassportFile($this->upload($passport, 'passport_directory'));
-                    $userProfilPictureValue= $request->get('btnprofilPicture'); 
-                    $candidate->setPassportFile($userProfilPictureValue);
-                }
-*/

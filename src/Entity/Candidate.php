@@ -334,4 +334,22 @@ class Candidate
 
         return $this;
     }
+
+    public function toArray(){
+        return ['gender'=>$this->getGender(),
+                'firstname'=>$this->getFirstName(), 
+                'lastname'=>$this->getLastName(), 
+                'adress' => $this->getAdress(), 
+                'country' => $this->getCountry(),
+                'nationality' => $this->getNationality(),
+                'curriculumVitae' => $this->getCurriculumVitae(),
+                'profilPicture' => $this->getProfilPicture(),
+                'currentLocation' => $this->getCurrentLocation(),
+                'dateOfBirth' => $this->getDateOfBirth(),
+                'placeOfBirth' => $this->getPlaceOfBirth(),
+                'shortDescription' => $this->getShortDescription(),
+                'experience' => $this->getExperience(),
+                'jobCategory' => $this->getJobCategory(),
+                'passportFile' => $this->getPassportFile()];
+    }
 }

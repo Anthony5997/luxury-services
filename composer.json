@@ -31,6 +31,7 @@
         "symfony/process": "*",
         "symfony/proxy-manager-bridge": "5.2.*",
         "symfony/security-bundle": "5.2.*",
+        "symfony/serializer": "5.2.*",
         "symfony/serializer-pack": "*",
         "symfony/service-contracts": "2.2.0",
         "symfony/string": "*",

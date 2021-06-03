@@ -40,6 +40,8 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
            
             $user = $userRepository->find($user->getId());
+
+            
             $candidate = new Candidate();
             $candidate->setUser($user);
             $entityManager = $this->getDoctrine()->getManager();
