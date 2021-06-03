@@ -161,3 +161,15 @@ body .log-section form .links a {
 #mapcontent h4 {
     margin-top: 0
 }
+
+#btnHeigt{
+    height: 6rem;
+}
+
+.tp-caption.boxshadow, .boxshadow {
+    box-shadow: 0 0 0px rgb(0 0 0)!important;
+}
+
+#candidate_jobCategory, #candidate_experience{
+    display: block;
+}

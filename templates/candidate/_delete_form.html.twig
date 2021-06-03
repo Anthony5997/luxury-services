@@ -1,4 +1,4 @@
-<form method="post" action="{{ path('candidate_delete', {'id': candidate.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ candidate.id) }}">
-    <button class="btn">Delete</button>
-</form>
+        <form method="post" action="{{ path('candidate_delete', {'id': candidate.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ candidate.id) }}">
+            <button onclick="return prompt('Please Type \'Delete my account\' to delete your K-Yachting Services account:') == 'Delete my account'" class="btn btn-block btn-lg waves-effect waves-light red"><i class="material-icons">&#xE872;</i> Delete my account</button>
+        </form>

@@ -107,6 +107,11 @@ class Candidate
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $passportFile;
+
 
 
     public function getId(): ?string
@@ -314,6 +319,18 @@ class Candidate
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPassportFile(): ?string
+    {
+        return $this->passportFile;
+    }
+
+    public function setPassportFile(?string $passportFile): self
+    {
+        $this->passportFile = $passportFile;
 
         return $this;
     }

@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\Entity\Candidate;
 use App\Form\CandidateType;
 use App\Repository\CandidateRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Service\FileUploader;
-
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 /**
  * @Route("/candidate")
  */
@@ -63,7 +62,7 @@ class CandidateController extends AbstractController
     /**
      * @Route("/{id}/edit", name="candidate_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Candidate $candidate, FileUploader $fileUploader): Response
+    public function edit(Request $request, Candidate $candidate, SluggerInterface $slugger): Response
     {
 
         // dd($fileUploader);
@@ -71,18 +70,22 @@ class CandidateController extends AbstractController
         $form->handleRequest($request);
         $user = $this->getUser();
         $candidate= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            
+           
             
             if ($form->isSubmitted() && $form->isValid()) {
-                /** @var UploadedFile $cv*/
-                $cv= $form->get('curriculumVitae')->getData();
-                if ($cv) {
-                    $brochureFileName = $fileUploader->upload( $cv, 'curriculumVitae_directory');
-                    $candidate->setCurriculumVitae($brochureFileName);
-                }                     
+                
+                $cv = $form->get('curriculumVitae')->getData();
+                $profilPicture = $form->get('profilPicture')->getData();
+                $passport = $form->get('passportFile')->getData();    
+                if($cv !== null){
+                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory', $slugger));
+                }
+                if($profilPicture !== null){
+                    $candidate->setProfilPicture($this->upload($profilPicture, 'profilePicture_directory', $slugger));
+                }
+                if($passport !== null){
+                    $candidate->setPassportFile($this->upload($passport, 'passport_directory', $slugger));
+                }
                 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -91,7 +94,6 @@ class CandidateController extends AbstractController
             ]);
             }
 
-        }
         return $this->render('candidate/edit.html.twig', [
             'candidate' => $candidate,
             'form' => $form->createView(),
@@ -113,4 +115,61 @@ class CandidateController extends AbstractController
     }
 
 
+
+    public function upload($file, $target_directory ,$slugger){
+        if ($file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $file->move(
+                            $this->getParameter($target_directory),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    return $newFilename;
+                }
+
+        }
+
 }
+
+
+
+/* 
+  if($cv !==null && $profilPicture !== null && $passport !== null){
+
+                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
+                    $candidate->setProfilPicture($this->upload($profilPicture, 'profilePicture_directory'));
+                    $candidate->setPassportFile($this->upload($passport, 'passport_directory'));
+    
+                }elseif($cv !==null && $profilPicture !== null && $passport === null){
+
+                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
+                    $candidate->setProfilPicture($this->upload($profilPicture, 'profilePicture_directory'));
+                    $userPassportFileValue= $request->get('btnpassportFile'); 
+                    $candidate->setPassportFile($userPassportFileValue);
+                     
+                }elseif($cv !==null && $profilPicture === null && $passport !== null){
+
+                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
+                    $candidate->setPassportFile($this->upload($passport, 'passport_directory'));
+                    $userProfilPictureValue= $request->get('btnprofilPicture'); 
+                    $candidate->setPassportFile($userProfilPictureValue);
+                }
+                elseif($cv ===null && $profilPicture !== null && $passport !== null){
+
+                    $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory'));
+                    $candidate->setPassportFile($this->upload($passport, 'passport_directory'));
+                    $userProfilPictureValue= $request->get('btnprofilPicture'); 
+                    $candidate->setPassportFile($userProfilPictureValue);
+                }
+*/

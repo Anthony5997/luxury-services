@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     curriculumVitae_directory: '%kernel.project_dir%/htdocs/assets/uploads/curriculumVitae'
+    profilePicture_directory: '%kernel.project_dir%/htdocs/assets/uploads/profilePicture'
+    passport_directory: '%kernel.project_dir%/htdocs/assets/uploads/passport'
 
 services:
     # default configuration for services in *this* file
@@ -30,7 +32,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Service\FileUploader:
-        arguments:
-            $targetDirectory: '%curriculumVitae_directory%'
