@@ -39,6 +39,10 @@ class JobOfferType extends AbstractType
                         ->orderBy('u.type', 'ASC');
                 },
                 'choice_label' => 'type',
+            ])
+            ->add('startingDate', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false,
             ]);
     }
 

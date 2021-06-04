@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use App\Repository\JobOfferRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\InheritanceType;
 /**
  * @ORM\Entity(repositoryClass=JobOfferRepository::class)
  */
@@ -46,7 +47,7 @@ class JobOffer
     private $salary;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $dateCreated;
 
@@ -67,6 +68,11 @@ class JobOffer
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
+
+     /**
+      * @ORM\Column(type="date")
+      */
+     private $startingDate;
 
     public function getId(): ?string
     {
@@ -177,6 +183,18 @@ class JobOffer
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getStartingDate():?\DateTimeInterface
+    {
+        return $this->startingDate;
+    }
+
+    public function setStartingDate(\DateTimeInterface $startingDate): self
+    {
+        $this->startingDate = $startingDate;
 
         return $this;
     }

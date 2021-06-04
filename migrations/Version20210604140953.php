@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210602093648 extends AbstractMigration
+final class Version20210604140953 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20210602093648 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE candidate ADD passport_file VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE job_offer CHANGE date_created date_created DATE NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE candidate DROP passport_file');
+        $this->addSql('ALTER TABLE job_offer CHANGE date_created date_created DATETIME NOT NULL');
     }
 }

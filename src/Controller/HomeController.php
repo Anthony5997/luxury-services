@@ -55,4 +55,24 @@ class HomeController extends AbstractController
             ]);
         }
     }
+
+        /**
+     * @Route("/about-us", priority=1, name="about_us", methods={"GET"})
+     */
+    public function show(): Response
+    { $user = $this->getUser();
+        $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
+
+        if(!$utilisateur){
+            $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+        }
+
+
+        return $this->render('home/about-us.html.twig', [
+
+            'client' => $utilisateur,
+            'candidate' => $utilisateur,
+
+        ]);
+    }
 }

@@ -39,10 +39,24 @@
                             </div>
                             <div class='red-text'>{{ form_errors(form.salary)}}</div>    
                         </div>
-                        <div class="col-xs-12 col-sm-12">
+                        <div class="col-xs-12 col-sm-6">
                             <div class="input-field">
                             {{ form_label(form.jobCategory, 'Job Category') }}
                             {{ form_widget(form.jobCategory) }}
+                            </div>
+                            <div class='red-text'>{{ form_errors(form.jobCategory)}}</div>    
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="input-field">
+                            {{ form_label(form.jobType, 'Job Type') }}
+                            {{ form_widget(form.jobType) }}
+                            </div>
+                            <div class='red-text'>{{ form_errors(form.jobCategory)}}</div>    
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="input-field">
+                            {{ form_label(form.startingDate, 'Starting Date') }}
+                            {{ form_widget(form.startingDate) }}
                             </div>
                             <div class='red-text'>{{ form_errors(form.jobCategory)}}</div>    
                         </div>

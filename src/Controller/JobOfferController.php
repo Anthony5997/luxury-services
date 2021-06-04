@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\JobOffer;
 use App\Entity\Client;
-use App\Entity\JobCategory;
+use App\Entity\Candidate;
 use App\Entity\JobType;
 use App\Form\JobOfferType;
 use App\Repository\JobOfferRepository;
+use App\Repository\JobCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,12 +22,33 @@ class JobOfferController extends AbstractController
     /**
      * @Route("/", name="job_offer_index", methods={"GET"})
      */
-    public function index(JobOfferRepository $jobOfferRepository): Response
+    public function index(JobOfferRepository $jobOfferRepository, JobCategoryRepository $jobCategory): Response
     {
+        if($user = $this->getUser()){
+
+            $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
+
+        if(!$utilisateur){
+            $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+        }
         return $this->render('job_offer/index.html.twig', [
-            'job_offers' => $jobOfferRepository->findAll(),
+            'job_offers' =>  $jobOfferRepository->findAll(),
+            'job_category' => $jobCategory->findAll(),
+            'client' => $utilisateur,
+            'candidate' => $utilisateur,
+
         ]);
+
+        }else{
+            return $this->render('job_offer/index.html.twig', [
+                'job_offers' => $jobOfferRepository->findAll(),
+                'job_category' => $jobCategory->findAll(),
+                ]);
+
+        }
     }
+
+    
 
     /**
      * @Route("/{id}/new", name="job_offer_new", methods={"GET","POST"})
@@ -68,9 +90,30 @@ class JobOfferController extends AbstractController
      */
     public function show(JobOffer $jobOffer): Response
     {
-        return $this->render('job_offer/show.html.twig', [
-            'job_offer' => $jobOffer,
-        ]);
+        $user = $this->getUser();
+        $jobOffer->setJobType($this->getDoctrine()->getRepository(JobType::class)->findOneBy(array('id' => $jobOffer->getJobType())));
+        
+        if($user = $this->getUser()){
+
+            $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
+
+            if(!$utilisateur){
+                $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+            }
+            return $this->render('job_offer/show.html.twig', [
+                'job_offer' => $jobOffer,
+                'client' => $utilisateur,
+                'candidate' => $utilisateur,
+
+            ]);
+
+        }else{
+            return $this->render('job_offer/show.html.twig', [
+                'job_offer' => $jobOffer,
+            ]);
+        }
+      
+
     }
 
     /**
