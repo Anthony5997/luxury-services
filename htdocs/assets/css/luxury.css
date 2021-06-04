@@ -170,14 +170,6 @@ body .log-section form .links a {
     box-shadow: 0 0 0px rgb(0 0 0)!important;
 }
 
-#candidate_jobCategory, #candidate_experience{
-    display: block;
-}
-
-#job_offer_jobCategory{
-    display: block;
-}
-
-#job_offer_jobType{
+#candidate_jobCategory, #candidate_experience, #job_offer_jobCategory ,#job_offer_jobType{
     display: block;
 }

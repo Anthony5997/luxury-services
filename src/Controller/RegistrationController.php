@@ -37,6 +37,8 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
             $entityManager = $this->getDoctrine()->getManager();
+            $date = new \DateTime();
+            $user->setDateCreated($date);
             $entityManager->persist($user);
             $entityManager->flush();
             $user = $userRepository->find($user->getId());

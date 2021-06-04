@@ -46,10 +46,14 @@ class JobOfferController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $date = new \DateTime();
+            $jobOffer->setDateCreated($date);
             $entityManager->persist($jobOffer);
             $entityManager->flush();
 
-            return $this->redirectToRoute('job_offer_index');
+            return $this->redirectToRoute('client_edit', [
+                'id' => $client->getId(),
+            ]);
         }
 
         return $this->render('job_offer/new.html.twig', [

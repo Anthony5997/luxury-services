@@ -4,7 +4,6 @@
 
 {% block body %}
    <div class="base">
-
     <!-- Page -->
     <div class="page">
 
@@ -23,7 +22,7 @@
                 </div>
             </div>
         </section>
-        {% set profilecompleted = 0 %}
+            {% set profilecompleted = 0 %}
         {% for data in dataCandidate %}
             {% if data is not null %}
             {% set profilecompleted = profilecompleted +1 %}
@@ -32,9 +31,26 @@
         {% set pourcentageCompleted = profilecompleted * 100 / lengthData %}
 
 
+          {% for message in app.flashes('success') %}
+            <div class="card-panel teal lighten-2 white-text">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="card-panel red darken-4 white-text">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if  form_errors(form2.newPassword.first) is not empty %}
+            <div class="card-panel red darken-4 white-text">
+               {{ form_errors(form2.newPassword.first) }}
+            </div>
+        {% endif %}
+      
 
         <!-- Page Content-->
-        <section class="gray-bg">
+          <section class="gray-bg">
             <div class="container">
                 <div class="row">
                     <div class="score-container">

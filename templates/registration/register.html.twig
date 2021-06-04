@@ -71,14 +71,13 @@
                                  <span class="help-block">Confirm your password.</span>
                                  <div class='red-text'>{{ form_errors(registrationForm.password.second)}}</div>
                             </div>
-                            <div>
-                            <input type="radio" id="huey" name="role" value='1' checked>
-                            <label for="huey">candidate</label>
-                            </div>
-
-                            <div>
-                            <input type="radio" id="dewey" name="role" value="0">
-                            <label for="dewey">client</label>
+                            
+                            <div class="input-field">
+                            <input type="radio" id="candidate" name="role" value='1' checked>
+                            <label for="candidate">candidate</label>
+                        
+                            <input type="radio" id="client" name="role" value="0">
+                            <label for="client">client</label>
                             </div>
 
                             <div class="checkbox">
