@@ -90,19 +90,25 @@ class HomeController extends AbstractController
      * @Route("/contact", priority=2, name="contact", methods={"GET"})
      */
     public function contact(): Response
-    { $user = $this->getUser();
-        $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
+    { 
+        if($user = $this->getUser()){
+            
+            $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
+    
+            if(!$utilisateur){
+                $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+            }
+    
+    
+            return $this->render('home/contact.html.twig', [
+    
+                'client' => $utilisateur,
+                'candidate' => $utilisateur,
+    
+            ]);
 
-        if(!$utilisateur){
-            $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+        }else{
+            return $this->render('home/contact.html.twig');
         }
-
-
-        return $this->render('home/contact.html.twig', [
-
-            'client' => $utilisateur,
-            'candidate' => $utilisateur,
-
-        ]);
     }
 }

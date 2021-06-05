@@ -69,7 +69,10 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('client_index');
+            return $this->redirectToRoute('client_edit', [
+                'client' => $client,
+                'id' => $client->getId(),
+            ]);
         }
 
         return $this->render('client/edit.html.twig', [
