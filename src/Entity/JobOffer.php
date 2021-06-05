@@ -4,8 +4,7 @@ namespace App\Entity;
 
 use App\Repository\JobOfferRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\DiscriminatorMap;
-use Doctrine\ORM\Mapping\InheritanceType;
+
 /**
  * @ORM\Entity(repositoryClass=JobOfferRepository::class)
  */

@@ -18,13 +18,13 @@ class Candidacy
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Candidate::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Candidate::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $candidate;
 
     /**
-     * @ORM\OneToOne(targetEntity=JobOffer::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=JobOffer::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $jobOffer;

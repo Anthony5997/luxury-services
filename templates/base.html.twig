@@ -107,11 +107,11 @@
                                     <ul>
                                         <li><a href="/">Home</a></li>
                                         <li><a href="{{ path ('job_offer_index')}}">Jobs Offers</a></li>
-                                        <li><a href="/templates/compagny.html">About Us</a></li>
-                                        <li><a href="/templates/contact.html">Contact</a></li>
+                                        <li><a href="{{path ('about_us')}}">About Us</a></li>
+                                        <li><a href="{{path ('contact')}}">Contact</a></li>
                                         <li>-</li>
-                                        <li><a href="/templates/auth/profile.html">Profile</a></li>
-                                        <li><a href="/logout.html">Logout</a></li>
+                                        <li><a href="">Profile</a></li>
+                                        <li><a href="{{path ('app_logout')}}">Logout</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -189,7 +189,7 @@
                                     </a>
                                 </li>
                                 <li class=" dropdown">
-                                    <a target="_self" href="/templates/contact.html">
+                                    <a target="_self" href="{{path ('contact')}}">
                                         <i class=""></i>
                                         <span>Contact</span>
                                     </a>
@@ -241,17 +241,17 @@
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="/template/jobs/jobs.html">
+                            <a target="_self" href="{{ path ('job_offer_index')}}">
                                 <span>Jobs offers</span>
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="/templates/compagny.html">
+                            <a target="_self" href="{{ path ('about_us')}}">
                                 <span>About us</span>
                             </a>
                         </li>
                         <li class=" dropdown">
-                            <a target="_self" href="/templates/contact.html">
+                            <a target="_self" href="{{ path ('contact')}}">
                                 <span>Contact</span>
                             </a>
                         </li>

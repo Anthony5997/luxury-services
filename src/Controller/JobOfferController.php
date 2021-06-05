@@ -8,6 +8,7 @@ use App\Entity\Candidate;
 use App\Entity\JobType;
 use App\Form\JobOfferType;
 use App\Repository\JobOfferRepository;
+use App\Repository\CandidacyRepository;
 use App\Repository\JobCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,11 +89,11 @@ class JobOfferController extends AbstractController
     /**
      * @Route("/{id}", name="job_offer_show", methods={"GET"})
      */
-    public function show(JobOffer $jobOffer): Response
+    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository): Response
     {
         $user = $this->getUser();
         $jobOffer->setJobType($this->getDoctrine()->getRepository(JobType::class)->findOneBy(array('id' => $jobOffer->getJobType())));
-        
+        $candidacyExist = $candidacyRepository->findOneBy(array('jobOffer' => $jobOffer->getId()));
         if($user = $this->getUser()){
 
             $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
@@ -100,10 +101,13 @@ class JobOfferController extends AbstractController
             if(!$utilisateur){
                 $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
             }
+
             return $this->render('job_offer/show.html.twig', [
                 'job_offer' => $jobOffer,
                 'client' => $utilisateur,
                 'candidate' => $utilisateur,
+                'candidacyExist' => $candidacyExist,
+                'candidacy' => $candidacyExist,
 
             ]);
 

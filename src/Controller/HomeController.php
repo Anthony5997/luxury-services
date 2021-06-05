@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Candidate;
 use App\Entity\Client;
+use App\Repository\JobCategoryRepository;
+use App\Repository\JobOfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +15,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(): Response
+    public function index(JobOfferRepository $jobOfferRepository, JobCategoryRepository $jobCategory): Response
     {
         if($this->getUser()){ 
 
@@ -25,6 +27,8 @@ class HomeController extends AbstractController
                     'controller_name' => 'HomeController',
                     'user' => $user,
                     'candidate' => $candidate,
+                    'job_offers' => $jobOfferRepository->findAll(),
+                    'job_category' => $jobCategory->findAll(),
                 ]);
 
             }elseif($this->getUser()->getRoles()[0] == "ROLE_CLIENT") {
@@ -36,6 +40,8 @@ class HomeController extends AbstractController
                     'controller_name' => 'HomeController',
                     'user' => $user,
                     'client' => $client,
+                    'job_offers' => $jobOfferRepository->findAll(),
+                    'job_category' => $jobCategory->findAll(),
                 ]);
 
             }elseif($this->getUser()->getRoles()[0] == "ROLE_ADMIN"){
@@ -44,14 +50,18 @@ class HomeController extends AbstractController
         
                 return $this->render('home/index.html.twig', [
                     'controller_name' => 'HomeController',
-                    'user' => $user
+                    'user' => $user,
+                    'job_offers' => $jobOfferRepository->findAll(),
+                    'job_category' => $jobCategory->findAll(),
                 ]);
 
             }
         }else{
 
             return $this->render('home/index.html.twig', [
-                'controller_name' => 'HomeController'
+                'controller_name' => 'HomeController',
+                'job_offers' => $jobOfferRepository->findAll(),
+                'job_category' => $jobCategory->findAll(),
             ]);
         }
     }
@@ -69,6 +79,26 @@ class HomeController extends AbstractController
 
 
         return $this->render('home/about-us.html.twig', [
+
+            'client' => $utilisateur,
+            'candidate' => $utilisateur,
+
+        ]);
+    }
+
+         /**
+     * @Route("/contact", priority=2, name="contact", methods={"GET"})
+     */
+    public function contact(): Response
+    { $user = $this->getUser();
+        $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
+
+        if(!$utilisateur){
+            $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+        }
+
+
+        return $this->render('home/contact.html.twig', [
 
             'client' => $utilisateur,
             'candidate' => $utilisateur,

@@ -15,15 +15,26 @@
 
                         <div class="col-xs-12 col-md-4 quick-overview">
                             <ul class="portfolio-meta">
-                                <li><span> Pulished at </span>{{ job_offer.dateCreated ? job_offer.dateCreated|date('Y-m-d H:i:s') : '' }}</li>
+                                <li><span> Pulished at </span>{{ job_offer.dateCreated ? job_offer.dateCreated|date('m-dY H:i:s') : '' }}</li>
                                 <li><span> Position </span> {{job_offer.jobTitle}}</li>
                                 <li><span> Contract Type </span>{{job_offer.jobType.type}}</li>
                                 <li><span> Salary </span>{{job_offer.salary}} &euro;</li>
                                 <li><span> Location </span>{{job_offer.location}}</li>
-                                <li><span> Starting date </span>{{ job_offer.startingDate ? job_offer.startingDate|date('Y-m-d H:i:s') : '' }}</li>
+                                <li><span> Starting date </span>{{ job_offer.startingDate ? job_offer.startingDate|date('m-dY H:i:s') : '' }}</li>
                             </ul>
-                            <a class="btn btn-block gradient primary mt-30 waves-effect waves-light" href="#!">Apply for this job</a>
-                            <div class="btn btn-block btn-success mt-30 waves-effect waves-light disabled">You have applied for this job</div>
+                            {% if is_granted('ROLE_CANDIDATE') %} 
+                                {% if candidacyExist == null %}
+                                <a class="btn btn-block gradient primary mt-30 waves-effect waves-light" href="{{path ('candidacy', {'id': job_offer.id})}}">Apply for this job</a>
+                                {% else %}
+                                <form method="post" action="{{ path('candidacy_delete', {'id': candidacy.id}) }}" onsubmit="return confirm('Are you sure you want to delete this candidacy?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ candidacy.id) }}"> 
+                                    <button type="submit" class="btn">Delete</button>
+                                 </form>
+                                <div class="btn btn-block btn-success mt-30 waves-effect waves-light disabled">You have applied for this job</div>
+                                {% endif %}
+                            {% else %}
+                            <h5>Sign up for candidate</h5>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
