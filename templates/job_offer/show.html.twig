@@ -15,12 +15,12 @@
 
                         <div class="col-xs-12 col-md-4 quick-overview">
                             <ul class="portfolio-meta">
-                                <li><span> Pulished at </span>{{ job_offer.dateCreated ? job_offer.dateCreated|date('m-dY H:i:s') : '' }}</li>
+                                <li><span> Pulished at </span>{{ job_offer.dateCreated ? job_offer.dateCreated|date('m-d-Y H:i:s') : '' }}</li>
                                 <li><span> Position </span> {{job_offer.jobTitle}}</li>
                                 <li><span> Contract Type </span>{{job_offer.jobType.type}}</li>
                                 <li><span> Salary </span>{{job_offer.salary}} &euro;</li>
                                 <li><span> Location </span>{{job_offer.location}}</li>
-                                <li><span> Starting date </span>{{ job_offer.startingDate ? job_offer.startingDate|date('m-dY H:i:s') : '' }}</li>
+                                <li><span> Starting date </span>{{ job_offer.startingDate ? job_offer.startingDate|date('m-d-Y') : '' }}</li>
                             </ul>
                             {% if is_granted('ROLE_CANDIDATE') %} 
                                 {% if candidacyExist == null %}
