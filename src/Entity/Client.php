@@ -56,6 +56,11 @@ class Client
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilPicture;
+
 
     public function getId(): ?string
     {
@@ -142,6 +147,28 @@ class Client
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function toArray(){
+        return ['society'=>$this->getSociety(),
+                'Activity'=>$this->getActivity(), 
+                'contactName'=>$this->getContactName(), 
+                'status' => $this->getStatus(), 
+                'contactNumber' => $this->getContactNumber(),
+                'contactEmail' => $this->getContactEmail(),
+                'profilPicture' => $this->getProfilPicture()];
+    }
+
+    public function getProfilPicture(): ?string
+    {
+        return $this->profilPicture;
+    }
+
+    public function setProfilPicture(?string $profilPicture): self
+    {
+        $this->profilPicture = $profilPicture;
 
         return $this;
     }

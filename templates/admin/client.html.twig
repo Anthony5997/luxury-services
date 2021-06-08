@@ -1,0 +1,33 @@
+{% for info in admin_infos.clients %}
+        <div class="card job-card">
+            <div class="card-content">
+                <span class="title">
+                    <span class="card-title">{{(info.society ) ? info.society : 'No society' }}</span>
+                        <span class="card-title"> {{(info.activity) ? info.activity : 'No activity'}}</span>
+                    <span class="ref grey-text">Ref. {{info.id}}</span>
+                </span>
+                <div class="metas mb-20">
+                    <div class="meta">
+                        <i class="material-icons">&#xE53E;</i><i class="material-icons"></i>Contact Name: {{(info.contactName ) ? info.contactName : 'none'}}
+                    </div>
+                    <div class="meta">
+                        <i class="material-icons">&#xE916;</i>Status : {{ (info.status ) ? info.status : 'none' }}
+                    </div>
+                    <div class="meta">
+                        <i class="material-icons">&#xE55F;</i>Phone Number : {{(info.contactNumber ) ? info.contactNumber : 'none' }}
+                    </div>
+                    <div class="meta">
+                        <i class="material-icons">&#xE55F;</i>Mail : {{(info.contactEmail ) ? info.contactEmail : 'none' }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-action">
+                <div class="row">
+                <div class="col s12 m6">
+                    <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.id})}}">Update</a>
+                </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+<div class="no-item"></div>

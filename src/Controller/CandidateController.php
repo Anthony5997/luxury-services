@@ -14,11 +14,15 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+use \App\Traits\CustomResetPassword;
+use \App\Traits\CustomFiles;
+
 /**
  * @Route("/candidate")
  */
 class CandidateController extends AbstractController
 {
+    use CustomResetPassword, CustomFiles;
     /**
      * @Route("/", name="candidate_index", methods={"GET"})
      */
@@ -62,7 +66,8 @@ class CandidateController extends AbstractController
         ]);
     }
 
-    /**
+  
+ /**
      * @Route("/{id}/edit", name="candidate_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Candidate $candidate, SluggerInterface $slugger, UserPasswordEncoderInterface $passwordEncoder): Response
@@ -74,29 +79,24 @@ class CandidateController extends AbstractController
         $form2 = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         $form2->handleRequest($request);
-        
-        
+        $data = $candidate->toArray();
+        $lengthData = count($data);
+        $profilecompleted = 0;
+
+        foreach($data as $dataCandidate){
+        if($dataCandidate != null){
+            $profilecompleted += 1; 
+            }  
+        }
+        $pourcentageCompleted = $profilecompleted * 100 / $lengthData; 
+       
+         
         if ($form2->isSubmitted() && $form2->isValid()) {
     
             $oldPassword = $form2->get('password')->getData();
             $newPassword = $form2->get('newPassword')->getData();
             $email = $form2->get('email')->getData();
-            
-            if($userEmail === $email){
-                $passwordValide = $passwordEncoder->isPasswordValid($user, $oldPassword);
-            
-                if($passwordValide){
-                    $this->resetPassword($passwordEncoder,$newPassword);
-                    $this->addFlash('success', 'The password was changed');
-                   
-                }else{
-                    $this->addFlash('error', 'The password is wrong');
-                    
-                }
-            }else{
-                $this->addFlash('error', 'The email is wrong');
-            }
-                
+            $this->verifications($user, $userEmail, $email, $passwordEncoder,$oldPassword, $newPassword);  
     
             }
       
@@ -109,15 +109,20 @@ class CandidateController extends AbstractController
             $profilPicture = $form->get('profilPicture')->getData();
             $passport = $form->get('passportFile')->getData();    
             if($cv !== null){
-                $candidate->setCurriculumVitae($this->upload($cv, 'curriculumVitae_directory', $slugger, $candidate, $form));
+                $candidate->setCurriculumVitae($this->uploadFiles($cv, 'curriculumVitae_directory', $slugger));
+                $this->addFlash('success', 'The CV was updated');
             }
             if($profilPicture !== null){
-                $candidate->setProfilPicture($this->upload($profilPicture, 'profilePicture_directory', $slugger, $candidate, $form));
+                $candidate->setProfilPicture($this->uploadFiles($profilPicture, 'profilePicture_directory', $slugger));
+                $this->addFlash('success', 'The photo was updated');
             }
             if($passport !== null){
-                $candidate->setPassportFile($this->upload($passport, 'passport_directory', $slugger, $candidate, $form));
+                $candidate->setPassportFile($this->uploadFiles($passport, 'passport_directory', $slugger));
+                $this->addFlash('success', 'The passport was updated');
             }
-            
+             if($pourcentageCompleted === 100){
+            $candidate->setProfileCompleted(1);
+            }
             $this->getDoctrine()->getManager()->flush();
    
 
@@ -125,15 +130,13 @@ class CandidateController extends AbstractController
                 'id'=>$candidate->getId()
             ]);
         }
-                $data = $candidate->toArray();
-                $lengthData = count($data);
+
 
             return $this->render('candidate/edit.html.twig', [
                 'candidate' => $candidate,
                 'form' => $form->createView(),
-                'dataCandidate' => $data,
-                'lengthData' => $lengthData,
-                'form2' => $form2->createView(),
+                'pourcentageCompleted' => $pourcentageCompleted,
+                'form2' => $form2->createView(), 
             ]);
        
     }
@@ -151,43 +154,4 @@ class CandidateController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
-
-
-
-    public function upload($file, $target_directory ,$slugger){
-        if ($file) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-
-                    // Move the file to the directory where brochures are stored
-                    try {
-                        $file->move(
-                            $this->getParameter($target_directory),
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
-
-                    // updates the 'brochureFilename' property to store the PDF file name
-                    // instead of its contents
-                    return $newFilename;
-                }
-
-        }
-    public function resetPassword(UserPasswordEncoderInterface $passwordEncoder, $newPassword)
-
-            {
-                $user = $this->getUser();
-                $newEncodedPassword = $passwordEncoder->encodePassword($user, $newPassword);
-                $user->setPassword($newEncodedPassword);
-                
-            
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-            }
 }

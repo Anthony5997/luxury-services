@@ -89,11 +89,30 @@ class JobOfferController extends AbstractController
     /**
      * @Route("/{id}", name="job_offer_show", methods={"GET"})
      */
-    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository): Response
+    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository, JobOfferRepository $jobOfferRepository): Response
     {
+        
+        $allOffer = $jobOfferRepository->findAll();
+        $id = $jobOffer->getId();
+        
+        for($i = 0; $i < count($allOffer) ; $i++){
+            
+                if($allOffer[$i]->getId() == $id){
+                    $newOffer = $allOffer[$i +1]->getId();
+                    $previousOffer = $allOffer[$i -1]->getId();
+                }
+
+        }
+
+
+
+        //$previousOffer = $jobOfferRepository->findOneBy(['id' => $previousOffer]);
+        $newOffer = $jobOfferRepository->findOneBy(['id' => $newOffer]);
+        $previousOffer = $jobOfferRepository->findOneBy(['id' => $previousOffer]);
         $user = $this->getUser();
         $jobOffer->setJobType($this->getDoctrine()->getRepository(JobType::class)->findOneBy(array('id' => $jobOffer->getJobType())));
         $candidacyExist = $candidacyRepository->findOneBy(array('jobOffer' => $jobOffer->getId()));
+
         if($user = $this->getUser()){
 
             $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
@@ -107,13 +126,16 @@ class JobOfferController extends AbstractController
                 'client' => $utilisateur,
                 'candidate' => $utilisateur,
                 'candidacyExist' => $candidacyExist,
-                'candidacy' => $candidacyExist,
+                'nextOffer' => $newOffer,
+                'previousOffer' => $previousOffer,
+   
 
             ]);
 
         }else{
             return $this->render('job_offer/show.html.twig', [
                 'job_offer' => $jobOffer,
+                'nextOffer' => $newOffer,
             ]);
         }
       

@@ -1,0 +1,38 @@
+{% for info in admin_infos.candidates %}
+    <div class="card job-card">
+        <div class="card-content">
+            <span class="title">
+                <span class="card-title"> {{(info.firstName ) ? info.firstName : 'No FirstName' }}</span>
+                <span class="card-title"> {{(info.lastName) ? info.lastName : 'No LastName'}}</span><br>                                        
+                <span class="ref grey-text">Ref. {{info.id}}</span>
+            </span>
+            <div class="metas mb-20">
+                <div class="meta">
+                    <i class="material-icons">&#xE53E;</i>Adress : {{(info.adress ) ? info.adress : 'none'}}
+                </div>
+                <div class="meta">
+                    <i class="material-icons">&#xE916;</i>Country : {{ (info.country ) ? info.country : 'none' }}
+                </div>
+                <div class="meta">
+                    <i class="material-icons">&#xE55F;</i>Nationality : {{(info.nationality ) ? info.nationality : 'none' }}
+                </div>
+                    <div class="meta">
+                    <i class="material-icons">&#xE55F;</i>BirthDate : {{(info.dateOfBirth|date('m-d-Y') ) ? info.dateOfBirth|date('m-d-Y') : 'none' }}
+                </div>
+                    <div class="meta">
+                        <i class="material-icons">&#xE55F;</i>Current Location : {{(info.currentLocation ) ? info.currentLocation : 'none' }}
+                </div>
+            </div>
+        </div>
+        <div class="card-action">
+            <div class="row">
+            <div class="col s12 m6">
+                <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.id})}}">Update</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endfor %}
+<div class="no-item"></div>

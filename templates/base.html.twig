@@ -151,6 +151,22 @@
                                 </li>
                             </ul>
 
+                              {% elseif is_granted('ROLE_ADMIN') %}                            
+
+                             <ul class="menuzord-menu pull-right light" role="navigation">
+                                <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('admin')}}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+                                        <span>Admin Pannel</span>
+                                    </a>
+                                </li>
+                                <li class=" dropdown">
+                                    <a target="_self" href="{{ path ('app_logout')}}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
+                                        <span>Logout</span>
+                                    </a>
+
+                                </li>
+                            </ul>
+
                             {% endif %}
                         
                          {% else %}

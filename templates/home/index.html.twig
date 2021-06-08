@@ -308,7 +308,7 @@
                                             <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('job_offer_show', {'id': offer.id})}}">Details</a>
 
                                             {% if is_granted('ROLE_CANDIDATE') %}
-                                                <a class="btn btn-md primary waves-effect waves-light" href="{{path ('candidacy', {'id': offer.id})}}">Candidate</a>
+                                                <a class="btn btn-md primary waves-effect waves-light" href="{{path ('candidacy_new', {'id': offer.id})}}">Candidate</a>
                                             {% endif %}
                                         </div>
                                     </div>

@@ -4,17 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Form\ClientType;
+use App\Form\UserType;
 use App\Repository\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Traits\CustomResetPassword;
+use \App\Traits\CustomFiles;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/client")
  */
 class ClientController extends AbstractController
 {
+    use CustomResetPassword, CustomFiles;
+
     /**
      * @Route("/", name="client_index", methods={"GET"})
      */
@@ -58,26 +65,55 @@ class ClientController extends AbstractController
         ]);
     }
 
-    /**
+   /**
      * @Route("/{id}/edit", name="client_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Client $client): Response
+    public function edit(Request $request, Client $client,  UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
+        $userEmail = $user->getEmail();
+        $client= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+        $data = $client->toArray();
+        $lengthData = count($data);
+
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $form2 = $this->createForm(UserType::class, $user);
+        $form2->handleRequest($request);
+        
+        
+        if ($form2->isSubmitted() && $form2->isValid()) {
+    
+            $oldPassword = $form2->get('password')->getData();
+            $newPassword = $form2->get('newPassword')->getData();
+            $email = $form2->get('email')->getData();
+            
+     
+        $this->verifications($user, $userEmail, $email, $passwordEncoder,$oldPassword, $newPassword);
+        }
+       
 
-            return $this->redirectToRoute('client_edit', [
-                'client' => $client,
-                'id' => $client->getId(),
-            ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $profilPicture = $form->get('profilPicture')->getData();
+
+            if($profilPicture !== null){
+                $client->setProfilPicture($this->uploadFiles($profilPicture, 'profilePicture_directory', $slugger));
+                $this->addFlash('success', 'The photo was updated');
+            }
+            $this->getDoctrine()->getManager()->flush();
+            
+
+            return $this->redirectToRoute('client_edit', ['id'=>  $client->getId()]);
         }
 
         return $this->render('client/edit.html.twig', [
             'client' => $client,
             'form' => $form->createView(),
+            'form2' => $form2->createView(),
+            'dataClient' => $data, 
+            'lengthData' => $lengthData
+
         ]);
     }
 

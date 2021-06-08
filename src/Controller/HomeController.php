@@ -27,7 +27,7 @@ class HomeController extends AbstractController
                     'controller_name' => 'HomeController',
                     'user' => $user,
                     'candidate' => $candidate,
-                    'job_offers' => $jobOfferRepository->findAll(),
+                    'job_offers' => $jobOfferRepository->findAllByLimit(),
                     'job_category' => $jobCategory->findAll(),
                 ]);
 
@@ -40,7 +40,7 @@ class HomeController extends AbstractController
                     'controller_name' => 'HomeController',
                     'user' => $user,
                     'client' => $client,
-                    'job_offers' => $jobOfferRepository->findAll(),
+                    'job_offers' => $jobOfferRepository->findAllByLimit(),
                     'job_category' => $jobCategory->findAll(),
                 ]);
 
@@ -51,7 +51,7 @@ class HomeController extends AbstractController
                 return $this->render('home/index.html.twig', [
                     'controller_name' => 'HomeController',
                     'user' => $user,
-                    'job_offers' => $jobOfferRepository->findAll(),
+                    'job_offers' => $jobOfferRepository->findAllByLimit(),
                     'job_category' => $jobCategory->findAll(),
                 ]);
 
@@ -60,7 +60,7 @@ class HomeController extends AbstractController
 
             return $this->render('home/index.html.twig', [
                 'controller_name' => 'HomeController',
-                'job_offers' => $jobOfferRepository->findAll(),
+                'job_offers' => $jobOfferRepository->findAllByLimit(),
                 'job_category' => $jobCategory->findAll(),
             ]);
         }

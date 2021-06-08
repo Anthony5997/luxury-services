@@ -19,6 +19,23 @@ class JobOfferRepository extends ServiceEntityRepository
         parent::__construct($registry, JobOffer::class);
     }
 
+    /**
+     * @return 
+     */
+    public function findAllByLimit()
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT 
+                job_offer
+            FROM
+                App\Entity\JobOffer job_offer
+            ORDER BY job_offer.dateCreated DESC '
+        )
+            ->setMaxResults(4);
+        return $query->getResult();
+    }
+
     // /**
     //  * @return JobOffer[] Returns an array of JobOffer objects
     //  */

@@ -18,16 +18,23 @@ class Candidacy
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Candidate::class)
+     * @ORM\ManyToOne(targetEntity=Candidate::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $candidate;
 
     /**
-     * @ORM\OneToOne(targetEntity=JobOffer::class)
+     * @ORM\ManyToOne(targetEntity=JobOffer::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $jobOffer;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreated;
+
+
 
     public function getId(): ?int
     {
@@ -39,7 +46,7 @@ class Candidacy
         return $this->candidate;
     }
 
-    public function setCandidate(Candidate $candidate): self
+    public function setCandidate(?Candidate $candidate): self
     {
         $this->candidate = $candidate;
 
@@ -51,10 +58,23 @@ class Candidacy
         return $this->jobOffer;
     }
 
-    public function setJobOffer(JobOffer $jobOffer): self
+    public function setJobOffer(?JobOffer $jobOffer): self
     {
         $this->jobOffer = $jobOffer;
 
         return $this;
     }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->dateCreated;
+    }
+
+    public function setDateCreated(\DateTimeInterface $dateCreated): self
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
 }

@@ -22,15 +22,7 @@
                 </div>
             </div>
         </section>
-            {% set profilecompleted = 0 %}
-        {% for data in dataCandidate %}
-            {% if data is not null %}
-            {% set profilecompleted = profilecompleted +1 %}
-        {% endif %}
-        {% endfor %}
-        {% set pourcentageCompleted = profilecompleted * 100 / lengthData %}
-
-
+   
           {% for message in app.flashes('success') %}
             <div class="card-panel teal lighten-2 white-text">
                 {{ message }}

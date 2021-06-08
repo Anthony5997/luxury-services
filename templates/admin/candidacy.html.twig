@@ -1,0 +1,47 @@
+ {% for info in admin_infos.candidacy %}
+    <div class="card job-card">
+        <div class="card-content">
+            <span class="title">
+                <span class="card-title"> Candidacy : {{ info.id }}</span>
+            </span>
+            <div class="metas mb-20">
+                <div class="row">
+                    <div class="col-6">
+                    <h3>Job</h3>
+                        <div class="meta">
+                            <i class="material-icons">&#xE55F;</i>Job : {{ (info.jobOffer.jobTitle ) ? info.jobOffer.jobTitle : 'none' }}
+                        </div>
+                        <div class="meta">
+                            <i class="material-icons">&#xE55F;</i>Phone Number : {{(info.jobOffer.client.ContactNumber ) ? info.jobOffer.client.ContactNumber : 'none' }}
+                        </div>
+                        <div class="meta">
+                            <i class="material-icons">&#xE55F;</i>Email : {{(info.jobOffer.client.ContactEmail ) ? info.jobOffer.client.ContactEmail : 'none' }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h3>Candidate</h3>
+                        <div class="meta">
+                            <i class="material-icons">&#xE55F;</i>Last Name : {{(info.candidate.lastName ) ? info.candidate.lastName : 'none' }}
+                        </div>
+                        <div class="meta">
+                            <i class="material-icons">&#xE55F;</i>First Name : {{(info.candidate.lastName ) ? info.candidate.lastName : 'none' }}
+                        </div>
+                        <div class="meta">
+                            <i class="material-icons">&#xE55F;</i>Candidacy date {{(info.dateCreated|date('m-d-Y') ) ? info.dateCreated|date('m-d-Y') : 'none' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-action">
+            <div class="row">
+            <div class="col s12 m6">
+                <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.id})}}">Update</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endfor %}
+<div class="no-item"></div>
