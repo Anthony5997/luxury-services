@@ -33,7 +33,7 @@ class InfoAdminCandidate
     private $dateDeleted;
 
     /**
-     * @ORM\OneToOne(targetEntity=Candidate::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Candidate::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $candidate;

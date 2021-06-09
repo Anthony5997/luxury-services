@@ -3,9 +3,16 @@
 {% block title %}New JobType{% endblock %}
 
 {% block body %}
-    <h1>Create new JobType</h1>
 
-    {{ include('job_type/_form.html.twig') }}
-
-    <a href="{{ path('job_type_index') }}">back to list</a>
+<div class="base">
+    <div class="page">
+        <section class="padding-top-160 padding-bottom-80">
+            <div class="container">
+            <h2 class="center-align"> Add new Job Category</h2>
+                {{ include('job_type/_form.html.twig') }} 
+            </div>
+        </section>
+    </div>
+</div>
 {% endblock %}
+

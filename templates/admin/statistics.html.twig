@@ -1,0 +1,55 @@
+{% set clients = 0 %}
+{% set candidates = 0 %}
+{% set jobOffers = 0 %}
+{% set candidacies = 0 %}
+
+{% for client in admin_infos.clients %}
+{% set clients = clients + 1 %}
+{% endfor %}
+
+{% for candidate in admin_infos.candidates %}
+{% set candidates = candidates + 1 %}
+{% endfor %}
+
+{% for jobOffer in admin_infos.jobOffer %}
+{% set jobOffers = jobOffers + 1 %}
+{% endfor %}
+
+{% for candidacy in admin_infos.candidacy %}
+{% set candidacies = candidacies + 1 %}
+{% endfor %}
+
+<div class="row center">
+    <div class="card job-card col s12 m3">
+        <div class="card-content">
+         <span class="title">
+            <span class="card-title">Clients</br>🏢</br>{{ clients }}</span>
+        </span>
+        </div>
+    </div>
+
+    <div class="card job-card col s12 m3">
+        <div class="card-content">
+         <span class="title">
+            <span class="card-title">Candidates</br>👨‍💼👩‍💼</br>{{ candidates }}</span>
+        </span>
+        </div>
+    </div>
+
+    <div class="card job-card col s12 m3">
+        <div class="card-content">
+         <span class="title">
+            <span class="card-title">Job Offers</br>💼</br>{{ jobOffers }}</span>
+        </span>
+        </div>
+    </div>
+
+     <div class="card job-card col s12 m3">
+        <div class="card-content">
+         <span class="title">
+            <span class="card-title">Candidacies</br>📂</br>{{ candidacies }}</span>
+        </span>
+        </div>
+    </div>
+
+</div> 

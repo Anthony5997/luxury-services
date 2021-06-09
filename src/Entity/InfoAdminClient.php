@@ -23,7 +23,7 @@ class InfoAdminClient
     private $notes;
 
     /**
-     * @ORM\OneToOne(targetEntity=Client::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Client::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;

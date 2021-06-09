@@ -1,43 +1,62 @@
+
  {% for info in admin_infos.candidacy %}
-    <div class="card job-card">
+    <div class="card-candidacies black-text">
         <div class="card-content">
             <span class="title">
-                <span class="card-title"> Candidacy : {{ info.id }}</span>
+                <span class="card-title-admin"> Job : {{ (info.jobOffer.jobTitle ) ? info.jobOffer.jobTitle : 'none' }}</span>
             </span>
-            <div class="metas mb-20">
-                <div class="row">
-                    <div class="col-6">
-                    <h3>Job</h3>
-                        <div class="meta">
-                            <i class="material-icons">&#xE55F;</i>Job : {{ (info.jobOffer.jobTitle ) ? info.jobOffer.jobTitle : 'none' }}
-                        </div>
-                        <div class="meta">
-                            <i class="material-icons">&#xE55F;</i>Phone Number : {{(info.jobOffer.client.ContactNumber ) ? info.jobOffer.client.ContactNumber : 'none' }}
-                        </div>
-                        <div class="meta">
-                            <i class="material-icons">&#xE55F;</i>Email : {{(info.jobOffer.client.ContactEmail ) ? info.jobOffer.client.ContactEmail : 'none' }}
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <h3>Candidate</h3>
-                        <div class="meta">
-                            <i class="material-icons">&#xE55F;</i>Last Name : {{(info.candidate.lastName ) ? info.candidate.lastName : 'none' }}
-                        </div>
-                        <div class="meta">
-                            <i class="material-icons">&#xE55F;</i>First Name : {{(info.candidate.lastName ) ? info.candidate.lastName : 'none' }}
-                        </div>
-                        <div class="meta">
-                            <i class="material-icons">&#xE55F;</i>Candidacy date {{(info.dateCreated|date('m-d-Y') ) ? info.dateCreated|date('m-d-Y') : 'none' }}
+            <div class="row mb-20"> 
+                <div class="col s12 m6">
+                    <div class="row">
+                        <div class="card-title-admin center-align">Society</div>
+                            <div class="col s12">
+                                🏢 Society : {{ (info.jobOffer.client.society ) ? info.jobOffer.client.society : 'none' }}
+                            </div>
+                            <div class="col s12">
+                                📲 Phone Number : {{(info.jobOffer.client.ContactNumber ) ? info.jobOffer.client.ContactNumber : 'none' }}
+                            </div>
+                            <div class="col s12">
+                                📩 Email : {{(info.jobOffer.client.ContactEmail ) ? info.jobOffer.client.ContactEmail : 'none' }}
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="col s12 m6">
+                        <div class="row">
+                            <div class="card-title-admin center-align">Candidate</div>
+                            <div class="meta">
+                                Last Name : {{(info.candidate.lastName ) ? info.candidate.lastName : 'none' }}
+                            </div>
+                            <div class="meta">
+                                First Name : {{(info.candidate.firstName ) ? info.candidate.firstName : 'none' }}
+                            </div>
+                            <div class="meta">
+                                📆 Candidacy date {{(info.dateCreated|date('m-d-Y') ) ? info.dateCreated|date('m-d-Y') : 'none' }}
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
-        <div class="card-action">
+           <div class="card-action">
             <div class="row">
-            <div class="col s12 m6">
-                <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.id})}}">Update</a>
-            </div>
+                <div class="col s12 m3">
+                    <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.jobOffer.client.id})}}">See Client</a>
+                </div>
+                
+                 <div class="col s12 m3">
+                    <a class="btn btn-md primary border waves-effect waves-dark buttonAccesAddNotes" href="{{ path ('candidate_edit', {'id': info.candidate.id})}}" >See Candidate</a>
+                </div>
+                <div class="col s12 m3">
+                    <a class="btn btn-md primary border waves-effect waves-dark buttonAccesSeeNotes" href="{{ path ('job_offer_edit', {'id': info.jobOffer.id})}}" >See Job Offer</a>
+                </div> 
+                
+                <div class="col s12 m3">
+                    <form method="post" action="{{ path('candidacy_delete', {'id': info.id}) }}" onsubmit="return confirm('Are you sure you want to delete this Candidacy?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ info.id) }}">
+                        <button class="btn waves-effect waves-light red"><i class="material-icons">&#xE872;</i> Delete</button>
+                    </form>
+                </div>
+                
             </div>
         </div>
     </div>

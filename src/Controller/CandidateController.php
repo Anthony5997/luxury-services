@@ -96,11 +96,9 @@ class CandidateController extends AbstractController
             $oldPassword = $form2->get('password')->getData();
             $newPassword = $form2->get('newPassword')->getData();
             $email = $form2->get('email')->getData();
-            $this->verifications($user, $userEmail, $email, $passwordEncoder,$oldPassword, $newPassword);  
-    
+            $this->verifications($user, $userEmail, $email, $passwordEncoder,$oldPassword, $newPassword); 
             }
       
-        $candidate= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
         
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -132,13 +130,12 @@ class CandidateController extends AbstractController
         }
 
 
-            return $this->render('candidate/edit.html.twig', [
-                'candidate' => $candidate,
-                'form' => $form->createView(),
-                'pourcentageCompleted' => $pourcentageCompleted,
-                'form2' => $form2->createView(), 
-            ]);
-       
+        return $this->render('candidate/edit.html.twig', [
+            'candidate' => $candidate,
+            'form' => $form->createView(),
+            'pourcentageCompleted' => $pourcentageCompleted,
+            'form2' => $form2->createView(), 
+        ]); 
     }
 
     /**

@@ -1,33 +1,73 @@
 {% for info in admin_infos.clients %}
-        <div class="card job-card">
+        <div class="card-clients black-text">
             <div class="card-content">
                 <span class="title">
-                    <span class="card-title">{{(info.society ) ? info.society : 'No society' }}</span>
-                        <span class="card-title"> {{(info.activity) ? info.activity : 'No activity'}}</span>
-                    <span class="ref grey-text">Ref. {{info.id}}</span>
+                    <span class="card-title-admin">{{(info.client.society ) ? info.client.society : 'No society' }}</span></br>
+                        <span class="card-title"> {{(info.client.activity) ? info.client.activity : 'No activity'}}</span>
+                    <div class="ref grey-text right-align">Ref. {{info.client.id}}</div>
                 </span>
-                <div class="metas mb-20">
-                    <div class="meta">
-                        <i class="material-icons">&#xE53E;</i><i class="material-icons"></i>Contact Name: {{(info.contactName ) ? info.contactName : 'none'}}
+                  <div class="row mb-20">
+                        <div class="col s12 m4">
+                       📔 Contact Name: {{(info.client.contactName ) ? info.client.contactName : 'none'}}
                     </div>
-                    <div class="meta">
-                        <i class="material-icons">&#xE916;</i>Status : {{ (info.status ) ? info.status : 'none' }}
+                    <div class="col s12 m4">
+                        📩 Email : {{(info.client.contactEmail ) ? info.client.contactEmail : 'none' }}
                     </div>
-                    <div class="meta">
-                        <i class="material-icons">&#xE55F;</i>Phone Number : {{(info.contactNumber ) ? info.contactNumber : 'none' }}
+                    <div class="col s12 m4">
+                        📲 Phone Number : {{(info.client.contactNumber ) ? info.client.contactNumber : 'none' }}
                     </div>
-                    <div class="meta">
-                        <i class="material-icons">&#xE55F;</i>Mail : {{(info.contactEmail ) ? info.contactEmail : 'none' }}
+                </div>    
+                    <div>
+                       Status : {{ (info.client.status ) ? info.client.status : 'none' }} 
                     </div>
-                </div>
+                
             </div>
-            <div class="card-action">
-                <div class="row">
-                <div class="col s12 m6">
-                    <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.id})}}">Update</a>
+                <div class="card-action">
+            <div class="row">
+                <div class="col s12 m3">
+                    <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('client_edit', {'id': info.client.id})}}">Update</a>
                 </div>
+                
+                 <div class="col s12 m3">
+                    <a class="btn btn-md primary border waves-effect waves-dark buttonAccesAddNotes" id= '{{ info.client.id }}' >Add Notes</a>
                 </div>
+                <div class="col s12 m3">
+                    <a class="btn btn-md primary border waves-effect waves-dark buttonAccesSeeNotes" id= '{{ info.client.id }}' >See Notes</a>
+                </div> 
+                
+                <div class="col s12 m3">
+                    <form method="post" action="{{ path('candidate_delete', {'id': info.client.id}) }}" onsubmit="return confirm('Are you sure you want to delete this Candidate?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ info.client.id) }}">
+                        <button class="btn waves-effect waves-light red"><i class="material-icons">&#xE872;</i> Delete</button>
+                    </form>
+                </div>
+                
             </div>
         </div>
+        <div class='accesSeeNotes' id='accesSeeNotes{{ info.client.id }}'>
+             <div class="note-style">
+                {% for notes in info.note %}
+                <div class="card-note">
+                    <a href=" {{ path ('info_admin_client_delete', {'id': notes.id}) }}" onclick="return confirm('Are you sure you want to delete this note?');">❌</a><span class="ref grey-text">Note :</span>
+                    <span class="card-title"> {{(notes.notes ) ? notes.notes : 'No note' }}</span> 
+                </div>
+                <br>                               
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class='accesFormNotes' id='accesFormNotes{{ info.client.id }}'>
+            <form action="{{ path('info_admin_client_new')}}" method="POST">
+                <div class="input-field  mr-20">
+                <label for="notes">Notes </label>
+                    <input id="notes" type="text" name="notes">
+                </div>
+                <div class="input-field center">
+                    <input type="hidden" name="id" value={{ info.client.id}}>
+                    <button class="btn" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endfor %}
 <div class="no-item"></div>

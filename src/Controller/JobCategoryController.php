@@ -39,7 +39,7 @@ class JobCategoryController extends AbstractController
             $entityManager->persist($jobCategory);
             $entityManager->flush();
 
-            return $this->redirectToRoute('job_category_index');
+            return $this->redirectToRoute('admin');
         }
 
         return $this->render('job_category/new.html.twig', [

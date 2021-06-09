@@ -1,85 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Admin{% endblock %}
 
 {% block body %}
-        <section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2 class="white-text">Our job offers</h2>
-                        <span class="white-text">Search and filter by job category</span>
-                        
+
+<section id="admin" class="section-padding gray-bg">
+                <div class="container">
+                    <ul class="portfolio-filter brand-filter text-center">
+                        <li class="waves-effect waves-light btnStatistics">Statistics</li>
+                        <li class=" waves-effect waves-light btnCandidates">Candidates</li>
+                        <li class=" waves-effect waves-light btnClients">Clients</li>
+                        <li class=" waves-effect waves-light btnJobOffers">Job Offers</li>
+                        <li class=" waves-effect waves-light btnCandidacy">candidacy</li>
+                    </ul>
+                            <div id="statistics" class='statistics'>
+                            {{ include('admin/statistics.html.twig') }}
+                            </div>
+
+                            <div id="candidates" class='candidates'>
+                            {{ include('admin/candidate.html.twig') }}
+                            </div>
+                           
+                             <div id="clients" class='clients'>
+                           {{ include('admin/client.html.twig') }}
+                            </div>
+
+                            <div id="jobOffers" class='jobOffers'>
+                           {{ include('admin/jobOffers.html.twig') }}
+                            </div>
+
+                             <div id="candidacy" class='candidacy'>
+                          {{ include('admin/candidacy.html.twig') }}
+                            </div>
                     </div>
-                </div>
-            </div>
-        </section>
+</section>
 
-        <h1>Admin Pannel</h1>
-        <div class="row">
-        <a href="{{ path ('client_index')}}" class="btn btn-lg gradient secondary waves-effect waves-light page-scroll">View Client</a>
-        <a href="{{ path ('candidate_index')}}" class="btn btn-lg gradient secondary waves-effect waves-light page-scroll">View Candidate</a>
-        <a href="{{ path ('job_offer_index')}}" class="btn btn-lg gradient secondary waves-effect waves-light page-scroll">View Jobs</a>
-        <a href="{{ path ('job_category_index')}}" class="btn btn-lg gradient secondary waves-effect waves-light page-scroll">View Jobs Category</a>
-        <a href="{{ path ('job_type_index')}}" class="btn btn-lg gradient secondary waves-effect waves-light page-scroll">View Jobs Type</a>
-        
-        
-        
-        </div>
+<a href=" {{ path('job_category_new')}}"> Job Cat New</a>
+<a href=" {{ path('job_type_new')}}"> Job Type New</a>
+<a href=" {{ path('experience_new')}}"> XP New</a>
 
-    <section class="page-title page-title-bg fixed-bg overlay dark-5 padding-top-160 padding-bottom-80">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="white-text">Our job offers</h2>
-                    <span class="white-text">Search and filter by job category</span>
-                    
-                </div>
-            </div>
-        </div>
-    </section>
-     <section id="job-offers" class="section-padding gray-bg">
-            <div class="container">
-                <div class="text-center mb-40">
-                    <h2 class="section-title">We have the perfect job for you</h2>
-                    <p class="section-sub">just like our candidates, we offer quality, serious & reliable job offers.</p>
-                </div>
-        <div class="portfolio-container">
 
-            <section id="admin" class="section-padding gray-bg">
-                    <div class="container">
-                        <ul class="portfolio-filter brand-filter text-center">
-                            <li class="waves-effect waves-light btnStatistics">Statistics</li>
-                            <li class=" waves-effect waves-light btnCandidates">Candidates</li>
-                            <li class=" waves-effect waves-light btnClients">Clients</li>
-                            <li class=" waves-effect waves-light btnJobOffers">Job Offers</li>
-                            <li class=" waves-effect waves-light btnCandidacy">candidacy</li>
-                        </ul>
-                                <div id="statistics" class='statistics'>
-                                {# {{ include('admin/statistics.html.twig') }} #}
-                                </div>
 
-                                <div id="candidates" class='candidates'>
-                                {{ include('admin/candidate.html.twig') }}
-                                </div>
-                                
-                                    <div id="clients" class='clients'>
-                                {{ include('admin/client.html.twig') }}
-                                </div>
-
-                                <div id="jobOffers" class='jobOffers'>
-                                {{ include('admin/jobOffers.html.twig') }}
-                                </div>
-
-                                    <div id="candidacy" class='candidacy'>
-                                  {{ include('admin/jobOffers.html.twig') }}
-                                </div>
-                        </div>
-            </section>
 
 {% endblock %}
-
 {% block javascripts %}
- <script type="text/javascript" src=" {{ asset ('/assets/js/script.js')}}"></script>
-   
+    <script src="{{asset('assets/js/script.js') }}"></script>
 {% endblock %}

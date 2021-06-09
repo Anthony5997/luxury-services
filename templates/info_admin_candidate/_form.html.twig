@@ -1,4 +1,11 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+{{ form_start(formInfoCandidate, { 'action' : path('info_admin_candidate_new'), 'method' : 'POST'}) }}
+    <div class="input-field  mr-20">
+    {# {{ form_label(formInfoCandidate.notes, 'Notes') }}
+    {{ form_widget(formInfoCandidate.notes) }} #}
+    </div>
+    <div class="input-field center">
+    <input type="hidden" name="id" value={{ info.id}}>
     <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+   
+{{ form_end(formInfoCandidate) }} 
+</div>

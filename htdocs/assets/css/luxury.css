@@ -173,3 +173,50 @@ body .log-section form .links a {
 #candidate_jobCategory, #candidate_experience, #job_offer_jobCategory ,#job_offer_jobType{
     display: block;
 }
+
+.card-candidates{
+    border-left: 6px solid blue;
+    background-color: rgb(218, 233, 252);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.card-clients{
+    border-left: 6px solid green;
+    background-color: rgb(232, 250, 231);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.card-jobOffers{
+    border-left: 6px solid darkorange;
+    background-color: rgb(250, 234, 219);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.card-candidacies{
+    border-left: 6px solid darkslategrey;
+    background-color: rgb(247, 241, 241);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.note-style{
+    background-color: aliceblue;
+    border: 1px grey solid;
+    border-radius: 10px;
+    padding: 15px 15px 0px 15px;
+    margin-top: 10px;
+}
+
+.note-style a{
+    margin:5px;
+}
+
+.card-note{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(160, 159, 159, 0.576);
+}
+
+.card-title-admin{
+    font-size: 26px;
+}

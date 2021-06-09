@@ -13,9 +13,6 @@ class InfoAdminCandidateType extends AbstractType
     {
         $builder
             ->add('notes')
-            ->add('dateUpdated')
-            ->add('dateDeleted')
-            ->add('candidate')
         ;
     }
 

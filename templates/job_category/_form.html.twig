@@ -1,4 +1,12 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+      <div class="col 12">
+            <div class="input-field">
+                {{ form_label(form.category, 'Category', {
+                'label_attr': {'class': 'active'}
+            }) }}
+                {{ form_widget(form.category) }}
+            </div>
+                <div class='red-text'>{{ form_errors(form.category)}}</div>
+    </div>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
