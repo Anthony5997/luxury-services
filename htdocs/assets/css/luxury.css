@@ -220,3 +220,11 @@ body .log-section form .links a {
 .card-title-admin{
     font-size: 26px;
 }
+
+.truncated {
+    overflow: hidden;
+    display: block;
+    width: 450px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

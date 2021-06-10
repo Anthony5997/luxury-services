@@ -82,7 +82,7 @@ class CandidateController extends AbstractController
         $data = $candidate->toArray();
         $lengthData = count($data);
         $profilecompleted = 0;
-
+ 
         foreach($data as $dataCandidate){
         if($dataCandidate != null){
             $profilecompleted += 1; 
@@ -90,7 +90,7 @@ class CandidateController extends AbstractController
         }
         $pourcentageCompleted = $profilecompleted * 100 / $lengthData; 
        
-         
+         //dd($pourcentageCompleted);
         if ($form2->isSubmitted() && $form2->isValid()) {
     
             $oldPassword = $form2->get('password')->getData();
@@ -120,6 +120,8 @@ class CandidateController extends AbstractController
             }
              if($pourcentageCompleted === 100){
             $candidate->setProfileCompleted(1);
+            }else{
+                $candidate->setProfileCompleted(0);
             }
             $this->getDoctrine()->getManager()->flush();
    

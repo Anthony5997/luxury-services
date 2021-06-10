@@ -82,14 +82,49 @@
                         </div>
                     
 
-{{ form_end(form) }}
-</div>
+                    {{ form_end(form) }}
+                    </div>
+                    
                     <div class="row center">
-                    <div class="col-xs-12 col-sm-3"></div>
-                        <div class="col-xs-12 col-sm-6 btn primary ">
-                            <a href="{{ path('job_offer_new',{'id': client.id})}}"><i class="fa fa-long-arrow-right"></i> Crée une offre d'emploi</a>
+                        <div class="col s12 m6">
+                            <a class="btn gradient secondary waves-effect waves-light" href="{{ path('job_offer_new',{'id': client.id})}}"><i class="fa fa-long-arrow-right"></i> Crée une offre d'emploi</a>
                         </div>
-                        <div class="col-xs-12 col-sm-3"></div>
+                         <div class="col s12 m6" id="offer_display_btn">
+                            <button class="btn gradient secondary waves-effect waves-light" ><i class="fa fa-long-arrow-right"></i> Voir mes offres</button>
+                        </div>
+                    </div>
+                     
+                    
+                    <div class="offer_display">
+                        {% for job in jobOffer %}
+                                <div class="portfolio-wrapper">
+                                    <div class="card job-card">
+                                        <div class="card-content">
+                                            <span class="title">
+                                                <span class="card-title">{{job.jobTitle}}</span>
+                                                <span class="ref grey-text">Ref. {{job.id}}</span>
+                                            </span>
+                                            <div class="metas mb-20">
+                                                <div class="meta">
+                                                    <i class="material-icons">&#xE53E;</i>{{job.salary}}&euro;
+                                                </div>
+                                                <div class="meta">
+                                                    <i class="material-icons">&#xE916;</i>{{ job.startingDate|date("m/d/Y") }}
+                                                </div>
+                                                <div class="meta">
+                                                    <i class="material-icons">&#xE55F;</i>{{job.location}}
+                                                </div>
+                                            </div>
+                                            <p class="truncated">{{job.description}}</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a class="btn btn-md primary border waves-effect waves-dark" href="{{ path ('job_offer_show', {'id': job.id})}}">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="no-item"></div>
+                        {% endfor %}
+                    
                     </div>
 
 

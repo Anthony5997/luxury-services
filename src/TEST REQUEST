@@ -1,0 +1,9 @@
+SELECT client
+FROM class::Client 
+JOIN job_offer 
+ON job_offer.client_id = client.id 
+JOIN candidacy 
+ON candidacy.job_offer_id = job_offer.id 
+JOIN candidate 
+ON candidate.id = candidacy.candidate_id
+WHERE client.id = "6659aae0ee6b4eaea3644aae8e9972cd" 

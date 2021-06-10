@@ -3,9 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Entity\JobOffer;
+use App\Entity\Candidate;
 use App\Form\ClientType;
 use App\Form\UserType;
 use App\Repository\ClientRepository;
+use App\Repository\JobOfferRepository;
+use App\Repository\CandidacyRepository;
+use App\Repository\CandidateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,8 +78,10 @@ class ClientController extends AbstractController
         $user = $this->getUser();
         $userEmail = $user->getEmail();
         $client= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
+        $allJobOffer= $this->getDoctrine()->getRepository(JobOffer::class)->findBy(array('client' => $client->getId()));
         $data = $client->toArray();
         $lengthData = count($data);
+
 
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
@@ -112,7 +119,8 @@ class ClientController extends AbstractController
             'form' => $form->createView(),
             'form2' => $form2->createView(),
             'dataClient' => $data, 
-            'lengthData' => $lengthData
+            'lengthData' => $lengthData,
+            'jobOffer' => $allJobOffer,
 
         ]);
     }
@@ -129,5 +137,26 @@ class ClientController extends AbstractController
         }
 
         return $this->redirectToRoute('client_index');
+    }
+
+    /**
+     * @Route("/{id}", name="client_candidacies", priority=1, methods={"GET"})
+     */
+    public function candidacies(Request $request, Client $client, ClientRepository $clientRepository, JobOfferRepository $jobOfferRepository, CandidacyRepository $candidacyRepository, CandidateRepository $candidateRepository): Response
+    {
+        $jobOffers= $jobOfferRepository->findBy(['client'=> $client]);
+
+        //  $candidacy = $candidacyRepository->findBy(['jobOffer' => $jobOffers]);
+        //  $candidate = $candidateRepository->findBy(['id' => $candidacy[0]->getCandidate()]);
+        //  $candidacy->setCandidate($candidate);
+        //  dd($candidacy);
+
+        foreach($jobOffers as $jobOffer){
+        }
+
+
+        return $this->render('client/candidacies.html.twig', [
+            'client' => $client,
+        ]);
     }
 }

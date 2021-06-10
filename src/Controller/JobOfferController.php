@@ -86,33 +86,20 @@ class JobOfferController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="job_offer_show", methods={"GET"})
+ /**
+     * @Route("/{id}", name="job_offer_show", methods={"GET", "POST"})
      */
-    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository, JobOfferRepository $jobOfferRepository): Response
+    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository, JobOfferRepository $jobOfferRepository, Request $request): Response
     {
-        
-        $allOffer = $jobOfferRepository->findAll();
-        $id = $jobOffer->getId();
-        
-        for($i = 0; $i < count($allOffer) ; $i++){
-            
-                if($allOffer[$i]->getId() == $id){
-                    $newOffer = $allOffer[$i +1]->getId();
-                    $previousOffer = $allOffer[$i -1]->getId();
-                }
-
-        }
-
-
-
-        //$previousOffer = $jobOfferRepository->findOneBy(['id' => $previousOffer]);
-        $newOffer = $jobOfferRepository->findOneBy(['id' => $newOffer]);
-        $previousOffer = $jobOfferRepository->findOneBy(['id' => $previousOffer]);
+        $allJobs= $jobOfferRepository->JobOffersByDateCreated();
+        $next = $request->get('next'); 
+        $previous = $request->get('previous'); 
         $user = $this->getUser();
         $jobOffer->setJobType($this->getDoctrine()->getRepository(JobType::class)->findOneBy(array('id' => $jobOffer->getJobType())));
         $candidacyExist = $candidacyRepository->findOneBy(array('jobOffer' => $jobOffer->getId()));
-
+        $i = 0;
+        $lengthJobOffer = count($allJobs);
+       
         if($user = $this->getUser()){
 
             $utilisateur= $this->getDoctrine()->getRepository(Candidate::class)->findOneBy(array('user' => $user->getId()));
@@ -121,21 +108,50 @@ class JobOfferController extends AbstractController
                 $utilisateur= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
             }
 
+            if($next){
+                foreach($allJobs as $jobsOffer){
+                    $i+=1; 
+                    if($jobOffer->getId()=== $jobsOffer->getId()){ 
+                          break;  
+                    }
+                }
+                    if($i >= $lengthJobOffer){
+                            $i = 0;
+                            $jobOffer= $allJobs[$i];
+                        }else{
+                           $jobOffer= $allJobs[$i];    
+                          
+                        }
+            }
+            if($previous){
+                foreach($allJobs as $jobsOffer){
+                    $i+=1; 
+                    if($jobOffer->getId()=== $jobsOffer->getId()){
+                          $i -= 2;  
+                          break;  
+                    }
+                }
+                if($i === 0){
+                    $jobOffer= $allJobs[0];
+                }elseif($i <= 0){ 
+                    $i = $lengthJobOffer - 1;
+                    $jobOffer= $allJobs[$i];
+                }else{
+                    $jobOffer= $allJobs[$i];     
+                }
+            }
             return $this->render('job_offer/show.html.twig', [
                 'job_offer' => $jobOffer,
                 'client' => $utilisateur,
                 'candidate' => $utilisateur,
                 'candidacyExist' => $candidacyExist,
-                'nextOffer' => $newOffer,
-                'previousOffer' => $previousOffer,
-   
+                'candidacy' => $candidacyExist,
 
             ]);
 
         }else{
             return $this->render('job_offer/show.html.twig', [
                 'job_offer' => $jobOffer,
-                'nextOffer' => $newOffer,
             ]);
         }
       

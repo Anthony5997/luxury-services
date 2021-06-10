@@ -111,4 +111,27 @@ class HomeController extends AbstractController
             return $this->render('home/contact.html.twig');
         }
     }
+
+    /**
+     * @Route("/access-denied", priority=2, name="access_denied", methods={"GET"})
+     */
+    public function access_denied(): Response
+    { 
+        if($user = $this->getUser()){
+            
+           // add flash message 
+    
+    
+            //redirect to route home
+            return $this->redirectToRoute('home');
+
+        }else{
+            // add flash message 
+    
+    
+            //redirect to route login
+            return $this->redirectToRoute('app_login');
+
+        }
+    }
 }

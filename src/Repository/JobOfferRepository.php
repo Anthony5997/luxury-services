@@ -20,7 +20,7 @@ class JobOfferRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return 
+     * @return array
      */
     public function findAllByLimit()
     {
@@ -36,6 +36,14 @@ class JobOfferRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function JobOffersByDateCreated(){
+        return $this->createQueryBuilder('u')
+                ->select(array('u')) 
+                ->orderBy('u.dateCreated', 'ASC')
+                ->getQuery()
+                ->getResult();
+    }
+
     // /**
     //  * @return JobOffer[] Returns an array of JobOffer objects
     //  */
@@ -49,18 +57,6 @@ class JobOfferRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?JobOffer
-    {
-        return $this->createQueryBuilder('j')
-            ->andWhere('j.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
     }
     */

@@ -106,7 +106,7 @@
                                 <nav class="overlay-menu">
                                     <ul>
                                         <li><a href="/">Home</a></li>
-                                        <li><a href="{{ path ('job_offer_index')}}">Jobs Offers</a></li>
+                                        <li><a href="{{path ('job_offer_index')}}">Jobs Offers</a></li>
                                         <li><a href="{{path ('about_us')}}">About Us</a></li>
                                         <li><a href="{{path ('contact')}}">Contact</a></li>
                                         <li>-</li>
@@ -139,8 +139,11 @@
 
                             <ul class="menuzord-menu pull-right light" role="navigation">
                                 <li class=" dropdown">
+                                  <a target="_self" href="{{ path ('client_candidacies', {'id': client.id})}}">
+                                        <span>Candidacies Recieves</span>
+                                    </a>
                                      <a target="_self" href="{{ path ('client_edit', {'id': client.id})}}">
-                                        <span>Espace client</span>
+                                        <span>Customer Space</span>
                                     </a>
                                 </li>
                                 <li class=" dropdown">

@@ -19,6 +19,9 @@ class CandidacyRepository extends ServiceEntityRepository
         parent::__construct($registry, Candidacy::class);
     }
 
+
+
+
     // /**
     //  * @return Candidacy[] Returns an array of Candidacy objects
     //  */
@@ -47,4 +50,16 @@ class CandidacyRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findCandidacies($value)
+    { 
+        return  $this->createQueryBuilder('c')
+                    ->from(Candidacy::class, 'a')
+                    ->where('a.jobOffer = :val')
+                    ->setParameter('val', $value->getid())
+                    ->join('a.candidate', 'candidate')
+                    ->getQuery()
+                    ->getResult()
+        ;
+    }
 }

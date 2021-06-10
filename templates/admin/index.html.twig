@@ -3,46 +3,108 @@
 {% block title %}Admin{% endblock %}
 
 {% block body %}
+<div class="base">
+    <!-- Page -->
+    <div class="page">
+        <section id="admin" class="padding-top-160 padding-bottom-80 mt-30">
+            <div class="container">
+                <ul class="portfolio-filter brand-filter text-center">
+                    <li class="waves-effect waves-light btnStatistics">Statistics</li>
+                    <li class=" waves-effect waves-light btnCandidates">Candidates</li>
+                    <li class=" waves-effect waves-light btnClients">Clients</li>
+                    <li class=" waves-effect waves-light btnJobOffers">Job Offers</li>
+                    <li class=" waves-effect waves-light btnCandidacy">candidacies</li>
+                    <li class=" waves-effect waves-light btnExperience">Candidate Experience</li>
+                    <li class=" waves-effect waves-light btnJobType">Job Type</li>
+                    <li class=" waves-effect waves-light btnJobCategory">Job Category</li>
+                </ul>
+                        <div id="statistics" class='statistics'>
+                        {{ include('admin/statistics.html.twig') }}
+                        </div>
 
-<section id="admin" class="section-padding gray-bg">
-                <div class="container">
-                    <ul class="portfolio-filter brand-filter text-center">
-                        <li class="waves-effect waves-light btnStatistics">Statistics</li>
-                        <li class=" waves-effect waves-light btnCandidates">Candidates</li>
-                        <li class=" waves-effect waves-light btnClients">Clients</li>
-                        <li class=" waves-effect waves-light btnJobOffers">Job Offers</li>
-                        <li class=" waves-effect waves-light btnCandidacy">candidacy</li>
-                    </ul>
-                            <div id="statistics" class='statistics'>
-                            {{ include('admin/statistics.html.twig') }}
-                            </div>
+                        <div id="candidates" class='candidates'>
+                        {{ include('admin/candidate.html.twig') }}
+                        </div>
+                        
+                            <div id="clients" class='clients'>
+                        {{ include('admin/client.html.twig') }}
+                        </div>
 
-                            <div id="candidates" class='candidates'>
-                            {{ include('admin/candidate.html.twig') }}
-                            </div>
-                           
-                             <div id="clients" class='clients'>
-                           {{ include('admin/client.html.twig') }}
-                            </div>
+                        <div id="jobOffers" class='jobOffers'>
+                        {{ include('admin/jobOffers.html.twig') }}
+                        </div>
 
-                            <div id="jobOffers" class='jobOffers'>
-                           {{ include('admin/jobOffers.html.twig') }}
-                            </div>
+                            <div id="candidacy" class='candidacy'>
+                        {{ include('admin/candidacy.html.twig') }}
+                        </div>
 
-                             <div id="candidacy" class='candidacy'>
-                          {{ include('admin/candidacy.html.twig') }}
-                            </div>
-                    </div>
-</section>
+                        <div id="experience" class='experience center'>
+                                <a class="btn mb-20" href="{{ path('experience_new') }}">Create new Candidate Experience</a>
+                                <table class="table">
+                                <tbody>
+                                {% for experience in admin_infos.experience %}
+                                    <tr>
+                                        <td>{{ experience.experience }}</td>
+                                        <td>
+                                            <a class="btn gradient secondary waves-effect waves-light" href="{{ path('experience_edit', {'id': experience.id}) }}">edit</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3">no records found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
-<a href=" {{ path('job_category_new')}}"> Job Cat New</a>
-<a href=" {{ path('job_type_new')}}"> Job Type New</a>
-<a href=" {{ path('experience_new')}}"> XP New</a>
+                        <div id="jobType" class='jobType center'>
+                        <a class="btn mb-20" href="{{ path('job_type_new') }}">Create new Job Type</a>
+                            <table class="table">
+                                <tbody>
+                                {% for jobType in admin_infos.jobType %}
+                                    <tr>
+                                        <td>{{ jobType.type }}</td>
+                                
+                                        <td>
+                                            <a class="btn gradient secondary waves-effect waves-light" href="{{ path('job_type_edit', {'id': jobType.id}) }}">edit</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3">no records found</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
+                            <div id="jobCategory" class='jobCategory center'> 
+                            <a class="btn mb-20" href="{{ path('job_category_new') }}">Create new Job Category</a>
+                        <table class="table">
+                        <tbody>
+                        {% for jobCategory in admin_infos.jobCategory %}
+                            <tr>
+                                <td>{{ jobCategory.category }}</td>
+                                
+                                <td>
+                                    <a class="btn gradient secondary waves-effect waves-light" href="{{ path('job_category_edit', {'id': jobCategory.id}) }}">edit</a>
+                                </td>
 
-
-
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 {% endblock %}
-{% block javascripts %}
+ {% block javascripts %}
     <script src="{{asset('assets/js/script.js') }}"></script>
 {% endblock %}

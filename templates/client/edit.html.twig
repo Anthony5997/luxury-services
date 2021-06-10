@@ -16,7 +16,7 @@
                         <h2 class="white-text">Customer space</h2>
                         <span class="white-text">About the company & Professionnal informations</span>
                         <ol class="breadcrumb">
-                            <li><a href="#!">Home</a></li>
+                            <li><a href="{{path ('home')}}">Home</a></li>
                             <li class="active">Customer Space</li>
                         </ol>
                     </div>
@@ -78,7 +78,6 @@
 
         <!-- Page Content-->
             {{ include('client/_form.html.twig') }}
-         
          </div>  
          </br>
          <div class="row center"> 
@@ -92,4 +91,16 @@
 </div>
 </div>
 
+{% endblock %}
+{% block javascripts %}
+    <script> 
+    $(document).ready(function(){
+        $(".offer_display").hide();
+
+        
+            $( "#offer_display_btn" ).click(function() {
+            $(`.offer_display`).toggle();
+        })
+    });
+  </script>
 {% endblock %}
