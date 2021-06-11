@@ -2,22 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
-use App\Entity\JobOffer;
-use App\Entity\Candidate;
-use App\Form\ClientType;
+use App\Entity\Candidacy;
 use App\Form\UserType;
+use App\Entity\Client;
+use App\Form\ClientType;
+use App\Entity\Candidate;
+use App\Repository\CandidacyRepository;
 use App\Repository\ClientRepository;
 use App\Repository\JobOfferRepository;
-use App\Repository\CandidacyRepository;
 use App\Repository\CandidateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Traits\CustomResetPassword;
+use \App\Traits\CustomResetPassword;
 use \App\Traits\CustomFiles;
+use App\Entity\JobOffer;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -70,18 +71,17 @@ class ClientController extends AbstractController
         ]);
     }
 
-   /**
+    /**
      * @Route("/{id}/edit", name="client_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Client $client,  UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger): Response
     {
+        $allJobOffer= $this->getDoctrine()->getRepository(JobOffer::class)->findBy(array('client' => $client->getId()));
         $user = $this->getUser();
         $userEmail = $user->getEmail();
-        $client= $this->getDoctrine()->getRepository(Client::class)->findOneBy(array('user' => $user->getId()));
-        $allJobOffer= $this->getDoctrine()->getRepository(JobOffer::class)->findBy(array('client' => $client->getId()));
+       
         $data = $client->toArray();
         $lengthData = count($data);
-
 
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
@@ -89,6 +89,14 @@ class ClientController extends AbstractController
         $form2 = $this->createForm(UserType::class, $user);
         $form2->handleRequest($request);
         
+        $profilecompleted = 0;
+
+        foreach($data as $dataCandidate){
+        if($dataCandidate != null){
+            $profilecompleted += 1; 
+            }  
+        }
+        $pourcentageCompleted = $profilecompleted * 100 / $lengthData; 
         
         if ($form2->isSubmitted() && $form2->isValid()) {
     
@@ -118,9 +126,8 @@ class ClientController extends AbstractController
             'client' => $client,
             'form' => $form->createView(),
             'form2' => $form2->createView(),
-            'dataClient' => $data, 
-            'lengthData' => $lengthData,
-            'jobOffer' => $allJobOffer,
+           'pourcentageCompleted' => $pourcentageCompleted,
+           'jobOffer' => $allJobOffer,
 
         ]);
     }
@@ -138,23 +145,28 @@ class ClientController extends AbstractController
 
         return $this->redirectToRoute('client_index');
     }
-
     /**
-     * @Route("/{id}", name="client_candidacies", priority=1, methods={"GET"})
+     * @Route("/{id}", name="candidacies", priority=1, methods={"GET"})
      */
-    public function candidacies(Request $request, Client $client, ClientRepository $clientRepository, JobOfferRepository $jobOfferRepository, CandidacyRepository $candidacyRepository, CandidateRepository $candidateRepository): Response
+    public function candidacies(Request $request, Client $client, CandidacyRepository $candidacyRepository): Response
     {
-        $jobOffers= $jobOfferRepository->findBy(['client'=> $client]);
-
-       $allCandidacies = $candidacyRepository->findCandidacies($client);
-        $allInfosForAdmin = $candidacyRepository->findAllCandidateInfo();
-        dd($allInfosForAdmin);
-
+        $all = $candidacyRepository->findAllCandidacyFromClient($client);
         return $this->render('client/candidacies.html.twig', [
-            'client' => $client,
-            'candidacies' => $allCandidacies,
+            'client'=>$client,
+            'candidacies' => $all            
+        ]);  
+    }
+    /**
+     * @Route("/show_candidate{id}", name="showCandidate", priority=2, methods={"GET"})
+     */
+    public function showCandidate(Candidate $candidate, ClientRepository $clientRepository): Response
+    {
+        $user = $this->getUser();
+        $clientConnected = $clientRepository->findOneBy(['user'=> $user]);
+
+        return $this->render('client/showCandidate.html.twig', [
+            'candidate' => $candidate,
+            'client'=>$clientConnected
         ]);
     }
-
-    
 }

@@ -47,6 +47,7 @@ class RegistrationController extends AbstractController
       
                 $candidate = new Candidate();
                 $candidate->setUser($user);
+                $candidate->setProfileCompleted(false);
                 $user->setRoles(["ROLE_CANDIDATE"]);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($candidate);

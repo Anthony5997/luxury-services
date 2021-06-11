@@ -75,10 +75,42 @@ class CandidacyRepository extends ServiceEntityRepository
     }
 
 
-         /**
-     * @return
+    //      /**
+    //  * @return
+    //  */
+    // public function findAllInfosForAdmin($value): array
+    // {
+    //     return $this->createQueryBuilder('candidacy')
+  
+    //     ->addSelect('candidate')
+    //     ->join('candidacy.candidate' , 'candidate','WITH', 'candidate = candidacy.candidate')
+
+    //     ->addSelect('experience')
+    //     ->join('candidate.experience' , 'experience','WITH', 'experience = candidate.experience')
+
+    //     ->addSelect('jobOffer') 
+    //     ->join('candidacy.jobOffer' , 'jobOffer','WITH', 'jobOffer = candidacy.jobOffer')
+        
+    //     ->addSelect('jobType')
+    //     ->join('jobOffer.jobType' , 'jobType','WITH', 'jobType = jobOffer.jobType')
+
+    //     ->addSelect('jobCategory')
+    //     ->join('candidate.jobCategory' , 'jobCategory','WITH', 'jobCategory = candidate.jobCategory')
+
+    //     ->addSelect('client')
+    //     ->join('jobOffer.client' , 'client','WITH', 'client = jobOffer.client')
+
+    //     ->where('jobOffer.client = :value')
+    //     ->setParameter('value', $value)
+
+    //     ->getQuery()
+    //     ->getResult();   
+    // }
+
+    /**
+     * @return Candidacy[] Returns an array of Candidacy objects
      */
-    public function findAllInfosForAdmin($value): array
+    public function findAllCandidacyFromClient($value): array
     {
         return $this->createQueryBuilder('candidacy')
   
@@ -88,15 +120,15 @@ class CandidacyRepository extends ServiceEntityRepository
         ->addSelect('experience')
         ->join('candidate.experience' , 'experience','WITH', 'experience = candidate.experience')
 
-        ->addSelect('jobOffer') 
-        ->join('candidacy.jobOffer' , 'jobOffer','WITH', 'jobOffer = candidacy.jobOffer')
-        
-        ->addSelect('jobType')
-        ->join('jobOffer.jobType' , 'jobType','WITH', 'jobType = jobOffer.jobType')
-
         ->addSelect('jobCategory')
         ->join('candidate.jobCategory' , 'jobCategory','WITH', 'jobCategory = candidate.jobCategory')
 
+        ->addSelect('user')
+        ->join('candidate.user' , 'user','WITH', 'user = candidate.user')
+
+        ->addSelect('jobOffer') 
+        ->join('candidacy.jobOffer' , 'jobOffer','WITH', 'jobOffer = candidacy.jobOffer')
+        
         ->addSelect('client')
         ->join('jobOffer.client' , 'client','WITH', 'client = jobOffer.client')
 

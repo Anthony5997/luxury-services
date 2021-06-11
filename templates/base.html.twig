@@ -82,7 +82,7 @@
 
     </head>
     <body>
-        <header id="header" class="tt-nav transparent-header ">
+  <header id="header" class="tt-nav transparent-header ">
             <div class="header-sticky semi-transparent">
                 <div class="container">
 
@@ -106,12 +106,20 @@
                                 <nav class="overlay-menu">
                                     <ul>
                                         <li><a href="/">Home</a></li>
-                                        <li><a href="{{path ('job_offer_index')}}">Jobs Offers</a></li>
-                                        <li><a href="{{path ('about_us')}}">About Us</a></li>
-                                        <li><a href="{{path ('contact')}}">Contact</a></li>
-                                        <li>-</li>
-                                        <li><a href="">Profile</a></li>
-                                        <li><a href="{{path ('app_logout')}}">Logout</a></li>
+                                        <li><a href="{{ path ('job_offer_index')}}">Jobs Offers</a></li>
+                                        <li><a href="{{ path ('about_us')}}">About Us</a></li>
+                                         <li><a href="{{ path ('contact')}}">Contact</a></li> 
+                                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                            {% if (is_granted('ROLE_CANDIDATE')) and (is_granted('ROLE_CLIENT') == false) and (is_granted('ROLE_ADMIN') == false) %} 
+                                            
+                                            <li><a target="_self" href="{{ path ('candidate_edit', {'id': candidate.id})}}">Profile</a></li>
+                                            {% elseif (is_granted('ROLE_CLIENT')) and (is_granted('ROLE_CANDIDATE') == false) and (is_granted('ROLE_ADMIN') == false) %}
+                                             <li><a target="_self" href="{{ path ('candidacies', {'id': client.id})}}">Candidacies received</a>
+                                </li>
+                                            <li><a target="_self" href="{{ path ('client_edit', {'id': client.id})}}">Customer space </a></li>
+                                            {% endif %}
+                                        <li><a href="/logout.html">Logout</a></li>
+                                        {% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -119,7 +127,7 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                           {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 
-                                  {% if is_granted('ROLE_CANDIDATE') %}                            
+                                  {% if (is_granted('ROLE_CANDIDATE')) and (is_granted('ROLE_CLIENT') == false) and (is_granted('ROLE_ADMIN') == false) %}                            
 
                              <ul class="menuzord-menu pull-right light" role="navigation">
                                 <li class=" dropdown">
@@ -135,15 +143,17 @@
                                 </li>
                             </ul>
 
-                            {% elseif is_granted('ROLE_CLIENT') %}
-
+                            {% elseif (is_granted('ROLE_CLIENT')) and (is_granted('ROLE_CANDIDATE') == false) and (is_granted('ROLE_ADMIN') == false) %}
+                            
                             <ul class="menuzord-menu pull-right light" role="navigation">
-                                <li class=" dropdown">
-                                  <a target="_self" href="{{ path ('client_candidacies', {'id': client.id})}}">
-                                        <span>Candidacies Recieves</span>
+                             <li class=" dropdown">
+                                      <a target="_self" href="{{ path ('candidacies', {'id': client.id})}}">
+                                        <span>Candidacies received</span>
                                     </a>
-                                     <a target="_self" href="{{ path ('client_edit', {'id': client.id})}}">
-                                        <span>Customer Space</span>
+                                </li>
+                                <li class=" dropdown">
+                                      <a target="_self" href="{{ path ('client_edit', {'id': client.id})}}">
+                                        <span>Customer space</span>
                                     </a>
                                 </li>
                                 <li class=" dropdown">
@@ -153,13 +163,12 @@
 
                                 </li>
                             </ul>
+                            {% elseif is_granted('ROLE_ADMIN') %}
 
-                              {% elseif is_granted('ROLE_ADMIN') %}                            
-
-                             <ul class="menuzord-menu pull-right light" role="navigation">
+                            <ul class="menuzord-menu pull-right light" role="navigation">
                                 <li class=" dropdown">
-                                    <a target="_self" href="{{ path ('admin')}}" class="btn bn-lg gradient secondary btn-block waves-effect waves-light btn-register">
-                                        <span>Admin Pannel</span>
+                                      <a target="_self" href="{{ path ('admin')}}">
+                                        <span>Admin space</span>
                                     </a>
                                 </li>
                                 <li class=" dropdown">
@@ -196,19 +205,19 @@
                                     </a>
                                 </li>
                                 <li class=" dropdown">
-                                    <a target="_self" href="{{ path ('job_offer_index')}}">
+                                   <a href="{{ path ('job_offer_index')}}">
                                         <i class=""></i>
                                         <span>Jobs offers</span>
                                     </a>
                                 </li>
                                 <li class=" dropdown">
-                                    <a target="_self" href="{{path ('about_us')}}">
+                                    <a target="_self" href="{{ path ('about_us')}}">
                                         <i class=""></i>
                                         <span>About us</span>
                                     </a>
                                 </li>
                                 <li class=" dropdown">
-                                    <a target="_self" href="{{path ('contact')}}">
+                                    <a href="{{ path ('contact')}}">
                                         <i class=""></i>
                                         <span>Contact</span>
                                     </a>
