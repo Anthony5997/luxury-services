@@ -4,13 +4,14 @@ namespace App\Entity;
 
 use App\Repository\CandidateRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CandidateRepository::class)
  */
 class Candidate
 {
-       /**
+     /**
      * @var string
      *
      * @ORM\Column(name="id", type="string")
@@ -27,6 +28,12 @@ class Candidate
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Votre nom doit comporter au moins 2 des caractères",
+     *      maxMessage = "Votre nom ne peut pas comporter plus de 250 caractères"
+     * )
      */
     private $firstName;
 
@@ -92,7 +99,6 @@ class Candidate
 
     /**
      * @ORM\ManyToOne(targetEntity=Experience::class, inversedBy="candidate")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $experience;
 
@@ -116,7 +122,6 @@ class Candidate
      * @ORM\Column(type="boolean")
      */
     private $profileCompleted;
-
 
 
     public function getId(): ?string
@@ -339,7 +344,6 @@ class Candidate
 
         return $this;
     }
-
     public function toArray(){
         return ['gender'=>$this->getGender(),
                 'firstname'=>$this->getFirstName(), 
@@ -369,4 +373,5 @@ class Candidate
 
         return $this;
     }
+
 }

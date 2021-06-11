@@ -146,17 +146,15 @@ class ClientController extends AbstractController
     {
         $jobOffers= $jobOfferRepository->findBy(['client'=> $client]);
 
-        //  $candidacy = $candidacyRepository->findBy(['jobOffer' => $jobOffers]);
-        //  $candidate = $candidateRepository->findBy(['id' => $candidacy[0]->getCandidate()]);
-        //  $candidacy->setCandidate($candidate);
-        //  dd($candidacy);
-
-        foreach($jobOffers as $jobOffer){
-        }
-
+       $allCandidacies = $candidacyRepository->findCandidacies($client);
+        $allInfosForAdmin = $candidacyRepository->findAllCandidateInfo();
+        dd($allInfosForAdmin);
 
         return $this->render('client/candidacies.html.twig', [
             'client' => $client,
+            'candidacies' => $allCandidacies,
         ]);
     }
+
+    
 }

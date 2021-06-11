@@ -9,6 +9,7 @@ use App\Entity\JobType;
 use App\Form\JobOfferType;
 use App\Repository\JobOfferRepository;
 use App\Repository\CandidacyRepository;
+use App\Repository\CandidateRepository;
 use App\Repository\JobCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +60,6 @@ class JobOfferController extends AbstractController
         $jobOffer = new JobOffer();
         $form = $this->createForm(JobOfferType::class, $jobOffer);
         $form->handleRequest($request);
-        // dd($jobOffer);
         
         
         $user = $this->getUser();
@@ -89,14 +89,20 @@ class JobOfferController extends AbstractController
  /**
      * @Route("/{id}", name="job_offer_show", methods={"GET", "POST"})
      */
-    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository, JobOfferRepository $jobOfferRepository, Request $request): Response
-    {
+    public function show(JobOffer $jobOffer, CandidacyRepository $candidacyRepository, JobOfferRepository $jobOfferRepository, Request $request, CandidateRepository $candidateRepository): Response
+    {   $user = $this->getUser();
+        $candidate = $candidateRepository->findOneBy(['user'=> $user->getId()]); 
+        if($user->getRoles()[0] === "ROLE_CANDIDATE"){
+            $candidacyExist= $candidacyRepository->findJobOfferCandidacy($jobOffer, $candidate);
+        }else{
+            $candidacyExist = false;
+        }
+  
         $allJobs= $jobOfferRepository->JobOffersByDateCreated();
         $next = $request->get('next'); 
         $previous = $request->get('previous'); 
-        $user = $this->getUser();
         $jobOffer->setJobType($this->getDoctrine()->getRepository(JobType::class)->findOneBy(array('id' => $jobOffer->getJobType())));
-        $candidacyExist = $candidacyRepository->findOneBy(array('jobOffer' => $jobOffer->getId()));
+       
         $i = 0;
         $lengthJobOffer = count($allJobs);
        
@@ -122,6 +128,9 @@ class JobOfferController extends AbstractController
                            $jobOffer= $allJobs[$i];    
                           
                         }
+                        return $this->redirectToRoute('job_offer_show', [
+                            'id' => $jobOffer->getId(),
+                        ]);
             }
             if($previous){
                 foreach($allJobs as $jobsOffer){
@@ -139,6 +148,9 @@ class JobOfferController extends AbstractController
                 }else{
                     $jobOffer= $allJobs[$i];     
                 }
+                return $this->redirectToRoute('job_offer_show', [
+                    'id' => $jobOffer->getId(),
+                ]);
             }
             return $this->render('job_offer/show.html.twig', [
                 'job_offer' => $jobOffer,
@@ -181,14 +193,19 @@ class JobOfferController extends AbstractController
     /**
      * @Route("/{id}", name="job_offer_delete", methods={"POST"})
      */
-    public function delete(Request $request, JobOffer $jobOffer): Response
+    public function delete(Request $request, JobOffer $jobOffer, JobOfferRepository $jobOfferRepository): Response
     {
+        $client = $jobOfferRepository->findOneBy(["client" => $jobOffer->getClient()]);
+        dd($client);
         if ($this->isCsrfTokenValid('delete'.$jobOffer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($jobOffer);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('job_offer_index');
+        return $this->redirectToRoute('client_edit', [
+
+            'id' => $client->getId(),
+        ]);
     }
 }

@@ -116,4 +116,5 @@ class CandidacyController extends AbstractController
             'id' => $jobOffer->getId()
             ]);
     }
+
 }

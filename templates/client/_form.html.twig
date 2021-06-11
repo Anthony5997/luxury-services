@@ -101,7 +101,11 @@
                                     <div class="card job-card">
                                         <div class="card-content">
                                             <span class="title">
+                                                 <div class="col s12">
+                                                    {{ include('job_offer/_delete_form.html.twig') }}
+                                                </div>
                                                 <span class="card-title">{{job.jobTitle}}</span>
+                                            
                                                 <span class="ref grey-text">Ref. {{job.id}}</span>
                                             </span>
                                             <div class="metas mb-20">

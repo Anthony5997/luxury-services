@@ -48,7 +48,7 @@ class Client
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $ContactEmail;
+    private $contactEmail;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
@@ -129,12 +129,12 @@ class Client
 
     public function getContactEmail(): ?string
     {
-        return $this->ContactEmail;
+        return $this->contactEmail;
     }
 
-    public function setContactEmail(string $ContactEmail): self
+    public function setContactEmail(string $contactEmail): self
     {
-        $this->ContactEmail = $ContactEmail;
+        $this->contactEmail = $contactEmail;
 
         return $this;
     }
@@ -151,16 +151,6 @@ class Client
         return $this;
     }
 
-    public function toArray(){
-        return ['society'=>$this->getSociety(),
-                'Activity'=>$this->getActivity(), 
-                'contactName'=>$this->getContactName(), 
-                'status' => $this->getStatus(), 
-                'contactNumber' => $this->getContactNumber(),
-                'contactEmail' => $this->getContactEmail(),
-                'profilPicture' => $this->getProfilPicture()];
-    }
-
     public function getProfilPicture(): ?string
     {
         return $this->profilPicture;
@@ -171,5 +161,14 @@ class Client
         $this->profilPicture = $profilPicture;
 
         return $this;
+    }
+    public function toArray(){
+        return ['society'=>$this->getSociety(),
+                'Activity'=>$this->getActivity(), 
+                'contactName'=>$this->getContactName(), 
+                'status' => $this->getStatus(), 
+                'contactNumber' => $this->getContactNumber(),
+                'contactEmail' => $this->getContactEmail(),
+                'profilPicture' => $this->getProfilPicture()];
     }
 }
